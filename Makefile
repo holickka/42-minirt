@@ -1,26 +1,45 @@
+# __________detect os____________
+UNAME_S := $(shell uname -s)
+
+
+# _________program name__________
 NAME = miniRT
 #BONUS_NAME =
 
+# _____________color_____________
 GREEN = \033[92m
 RESET = \033[0m
 
+# _____________paths_____________
 INC_PATH = ./inc/
 SRCS_PATH = ./srcs/
 QUAT_PATH = ./libft/ft_quaternion/
 PRINTF_PATH = ./libft/ft_printf/
-LIBFT_PATH = ./libft/
-LIBMLX_PATH = ./libmlx/
-#BONUS_PATH =
 
-LIBMLX = $(LIBMLX_PATH)/libmlx_intel-mac.a
+# __________libft.a paths__________
+LIBFT_PATH = ./libft/
 LIBFT = $(LIBFT_PATH)/libft.a
+
+# __________libmlx.a paths__________
+ifeq ($(UNAME_S), Linux)
+	LIBMLX_PATH	:= ./libmlx_linux
+	LIBMLX		:= $(LIBMLX_PATH)/libmlx_Linux.a
+	MLXFLAG		:= -L/usr/lib -lXext -lX11 -lm -lz
+else ifeq ($(UNAME_S), Darwin)
+	LIBMLX_PATH	:= ./libmlx
+	LIBMLX		:= $(LIBMLX_PATH)/libmlx_intel-mac.a
+	MLXFLAG		:= -L/usr/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
+endif
+
+# __________srcs paths__________
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_FILES))
 SRCS_FILES =	main.c \
 				rt_utils_init.c		\
 				rt_utils_key.c		\
 				rt_utils_free.c
-#main-test-drawline_zoom_panmouse.c
 OBJS = $(SRCS:%.c=%.o)
+
+# __________bonus (if any)__________
 #BONUS_FILES =
 #BONUS_OBJS = $(BONUS_FILES:%.c=%.o)
 
@@ -28,20 +47,23 @@ CC = cc
 #FSAN = -fsanitize=address -g3
 INCS = -I$(INC_PATH) -I$(LIBFT_PATH) -I$(PRINTF_PATH) -I$(QUAT_PATH) -I$(LIBMLX_PATH)
 FLAGS = -Wall -Wextra -Werror $(FSAN) $(INCS)
-MLX = -L/usr/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
-#MLX = -lmlx -framework OpenGL -framework AppKit
+#MLXFLAG = -L/usr/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
+#MLXFLAG = -L/usr/lib -lXext -lX11 -lm -lz
 
 AR = ar -rc
 RM = rm -f
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(FLAGS) $(OBJS) $(LIBFT) $(LIBMLX) $(MLX) -o $(NAME)
+$(NAME): $(OBJS) $(LIBFT) $(LIBMLX)
+	$(CC) $(FLAGS) $(OBJS) $(LIBFT) $(LIBMLX) $(MLXFLAG) -o $(NAME)
 	@echo "$(GREEN)$(NAME) compiled!$(RESET)"
 
 $(LIBFT):
 	make -C $(LIBFT_PATH)
+
+$(LIBMLX):
+	make -C $(LIBMLX_PATH)
 
 %.o: %.c
 	$(CC) $(FLAGS) -c $< -o $@
