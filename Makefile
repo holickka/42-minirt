@@ -25,10 +25,12 @@ ifeq ($(UNAME_S), Linux)
 	LIBMLX_PATH	:= ./libmlx_linux
 	LIBMLX		:= $(LIBMLX_PATH)/libmlx_Linux.a
 	MLXFLAG		:= -L/usr/lib -lXext -lX11 -lm -lz
+
 else ifeq ($(UNAME_S), Darwin)
 	LIBMLX_PATH	:= ./libmlx
 	LIBMLX		:= $(LIBMLX_PATH)/libmlx_intel-mac.a
 	MLXFLAG		:= -L/usr/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
+
 endif
 
 # __________srcs paths__________
@@ -47,10 +49,8 @@ CC = cc
 #FSAN = -fsanitize=address -g3
 INCS = -I$(INC_PATH) -I$(LIBFT_PATH) -I$(PRINTF_PATH) -I$(QUAT_PATH) -I$(LIBMLX_PATH)
 FLAGS = -Wall -Wextra -Werror $(FSAN) $(INCS)
-#MLXFLAG = -L/usr/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
-#MLXFLAG = -L/usr/lib -lXext -lX11 -lm -lz
 
-AR = ar -rc
+# ___________remove files___________
 RM = rm -f
 
 all: $(NAME)

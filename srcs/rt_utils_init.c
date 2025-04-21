@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:05:22 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/21 13:05:22 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/21 15:28:17 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ void	initialize_mlx(t_vars *vars)
 		exit (1);
 	}
 	vars->mlxwindow = mlx_new_window(vars->mlxconnect, WIN_WIDTH, WIN_HEIGHT, \
-									"miniRT");
+"miniRT");
 }
