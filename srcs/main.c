@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:07:37 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/21 14:15:27 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/21 15:06:28 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	main()
 	initialize_mlx(&vars);
 
 	/* _____________close windows_____________ */
-	// mlx_hook(vars.mlxwindow, 17, 0, close_window_x, &vars);
-	mlx_hook(vars.mlxwindow, 17, 0, close_window, &vars);
+	mlx_hook(vars.mlxwindow, 17, 0, close_window_x, &vars);
 	mlx_key_hook(vars.mlxwindow, close_window, &vars);
 	
 	mlx_loop(vars.mlxconnect);

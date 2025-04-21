@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:07:08 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/21 13:34:28 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/21 15:05:54 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*dont use mlx_destroy_window, have fsan error*/
 int	close_window(int keycode, t_vars *vars)
 {
-	if (keycode == KEY_ESC || keycode == 17)
+	if (keycode == KEY_ESC)
 	{
 		free_malloc(vars, 1);
 		exit (0);
