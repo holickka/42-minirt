@@ -1,0 +1,71 @@
+NAME = fdf
+#BONUS_NAME =
+
+GREEN = \033[92m
+RESET = \033[0m
+
+INC_PATH = ./inc/
+SRCS_PATH = ./srcs/
+QUAT_PATH = ./libft/ft_quaternion/
+PRINTF_PATH = ./libft/ft_printf/
+LIBFT_PATH = ./libft/
+LIBMLX_PATH = ./libmlx_linux/
+#BONUS_PATH =
+
+LIBMLX = $(LIBMLX_PATH)/libmlx_Linux.a
+LIBFT = $(LIBFT_PATH)/libft.a
+SRCS = $(addprefix $(SRCS_PATH), $(SRCS_FILES))
+SRCS_FILES =    fdf_utils_init.c fdf_utils_init2.c \
+					fdf_utils.c fdf_utils_maps.c fdf_utils_maps2.c \
+					fdf_utils_key.c fdf_utils_key2.c fdf_utils_key3.c \
+					fdf_utils_key4.c fdf_utils_key5.c \
+					fdf_utils_bresenham.c fdf_utils_bresenham2.c \
+					fdf_utils_color.c fdf_utils_color2.c fdf_utils_color3.c \
+					fdf_utils_color4.c fdf_utils_color5.c \
+					fdf_utils_fitimage.c fdf_utils_fitimage2.c \
+					fdf_utils_draw.c fdf_utils_draw2.c fdf_utils_draw3.c \
+					fdf_utils_draw4.c \
+					main.c
+
+OBJS = $(SRCS:%.c=%.o)
+#BONUS_FILES =
+#BONUS_OBJS = $(BONUS_FILES:%.c=%.o)
+
+CC = cc
+FSAN = -fsanitize=address -g3
+INCS = -I$(INC_PATH) -I$(LIBFT_PATH) -I$(PRINTF_PATH) -I$(QUAT_PATH) -I$(LIBMLX_PATH)
+FLAGS = -Wall -Wextra -Werror $(FSAN) $(INCS)
+MLXFLAG = -L/usr/lib -lXext -lX11 -lm -lz
+
+AR = ar -rc
+RM = rm -f
+
+all: $(NAME)
+
+$(NAME): $(OBJS) $(LIBFT) $(LIBMLX)
+	$(CC) $(FLAGS) $(OBJS) $(LIBFT) $(LIBMLX) $(MLXFLAG) -o $(NAME)
+	@echo "$(GREEN)$(NAME) compiled!$(RESET)"
+
+$(LIBFT):
+	make -C $(LIBFT_PATH)
+
+$(LIBMLX):
+	make -C $(LIBMLX_PATH)
+
+%.o: %.c
+	$(CC) $(FLAGS) -c $< -o $@
+
+bonus: all
+
+clean:
+	make clean -C $(LIBFT_PATH)
+	make clean -C $(LIBMLX_PATH)
+	$(RM) $(OBJS) $(BONUS_OBJS)
+
+fclean: clean
+	make fclean -C $(LIBFT_PATH)
+	$(RM) $(NAME)
+
+re: fclean all
+
+.PHONY: all bonus clean fclean re
