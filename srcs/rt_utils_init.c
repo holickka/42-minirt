@@ -6,11 +6,11 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:05:22 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/21 15:28:17 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/19 19:00:44 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 /*
  * initialize mlx windows for image rendering
@@ -26,4 +26,24 @@ void	initialize_mlx(t_vars *vars)
 	}
 	vars->mlxwindow = mlx_new_window(vars->mlxconnect, WIN_WIDTH, WIN_HEIGHT, \
 "miniRT");
+}
+
+void	init_variable(t_vars *vars)
+{
+	vars->cam_center = new_vector3d(0, 0, 0);
+	vars->ray.origin = vars->cam_center; //be careful with this one, maybe copy safer?
+	vars->ray.vector = new_vector3d(0, 0, 0);
+
+	vars->focal_len = 1;
+	vars->color_bg[0] = create_hsv(199, 100, 100);
+	vars->color_bg[1] = create_hsv(166, 38, 100);
+
+	vars->count_sph = 2;
+	malloc_sph_ptr(&vars->sph, vars->count_sph);
+	vars->sph[0].orig = new_vector3d(0, 0, -1);
+	vars->sph[0].rad = 0.5;
+	vars->sph[1].orig = new_vector3d(0, -110, -5);
+	vars->sph[1].rad = 100;
+
+	my_create_image(vars, &vars->img);
 }

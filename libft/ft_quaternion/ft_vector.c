@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 16:36:20 by hsim              #+#    #+#             */
-/*   Updated: 2024/12/27 16:57:31 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/07 11:30:06 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ t_vector3d	new_vector3d(float x, float y, float z)
 float	len_vector3d(t_vector3d vector)
 {
 	return (sqrt((vector.x * vector.x) + \
-				(vector.y * vector.y) + \
-				(vector.z * vector.z)));
+(vector.y * vector.y) + \
+(vector.z * vector.z)));
 }
 
-/* Normalize vector */
+/* Normalize vector into unit vector */
 t_vector3d	norm_vector3d(t_vector3d vector)
 {
 	float	length;
@@ -39,23 +39,9 @@ t_vector3d	norm_vector3d(t_vector3d vector)
 	length = len_vector3d(vector);
 	if (length >= 0.00001f)
 		return (new_vector3d(vector.x / length, \
-							vector.y / length, \
-							vector.z / length));
+vector.y / length, \
+vector.z / length));
 	return (vector);
-}
-
-/* 
- * Multiply vector with scalar 
- * q = cos(deg/2) + sin(deg/2)( x + y + z )
- */
-t_vector3d	multiply_vector_scalar(t_vector3d a, float s)
-{
-	t_vector3d	result;
-
-	result.x = a.x * s;
-	result.y = a.y * s;
-	result.z = a.z * s;
-	return (result);
 }
 
 /* Add vector + vector */
@@ -66,5 +52,16 @@ t_vector3d	add_vector(t_vector3d a, t_vector3d b)
 	result.x = a.x + b.x;
 	result.y = a.y + b.y;
 	result.z = a.z + b.z;
+	return (result);
+}
+
+/* Subtract vector + vector */
+t_vector3d	subtract_vector(t_vector3d a, t_vector3d b)
+{
+	t_vector3d	result;
+
+	result.x = a.x - b.x;
+	result.y = a.y - b.y;
+	result.z = a.z - b.z;
 	return (result);
 }

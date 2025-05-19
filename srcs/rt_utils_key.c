@@ -6,11 +6,11 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:07:08 by hsim              #+#    #+#             */
-/*   Updated: 2025/04/21 15:05:54 by hsim             ###   ########.fr       */
+/*   Updated: 2025/04/25 20:19:15 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 
 /*dont use mlx_destroy_window, have fsan error*/
 int	close_window(int keycode, t_vars *vars)

@@ -35,9 +35,15 @@ endif
 
 # __________srcs paths__________
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_FILES))
-SRCS_FILES =	main.c \
-				rt_utils_init.c		\
-				rt_utils_key.c		\
+SRCS_FILES =	main.c 						\
+				rt_utils_init.c				\
+				rt_utils_malloc.c			\
+				rt_utils_key.c				\
+				rt_utils_ray.c				\
+				rt_utils_draw.c				\
+				rt_utils_color.c			\
+				rt_utils_color2.c			\
+				rt_utils_color5.c			\
 				rt_utils_free.c
 OBJS = $(SRCS:%.c=%.o)
 
@@ -46,7 +52,7 @@ OBJS = $(SRCS:%.c=%.o)
 #BONUS_OBJS = $(BONUS_FILES:%.c=%.o)
 
 CC = cc
-#FSAN = -fsanitize=address -g3
+FSAN = -fsanitize=address -g3
 INCS = -I$(INC_PATH) -I$(LIBFT_PATH) -I$(PRINTF_PATH) -I$(QUAT_PATH) -I$(LIBMLX_PATH)
 FLAGS = -Wall -Wextra -Werror $(FSAN) $(INCS)
 

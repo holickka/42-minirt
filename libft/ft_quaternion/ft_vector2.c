@@ -6,14 +6,14 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 16:56:34 by hsim              #+#    #+#             */
-/*   Updated: 2024/12/27 22:37:27 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/07 12:21:44 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_vector.h"
 
 /*
- * Calculates scalar product of given vector
+ * Calculates scalar/dot product of given vector
  */
 float	scalar_product(t_vector3d a, t_vector3d b)
 {
@@ -39,10 +39,10 @@ t_vector3d	cross_product_quaternion(t_quat a, t_quat b)
 	t_vector3d	result;
 
 	result.x = (a.scalar * b.vector.x) + (a.vector.x * b.scalar) + \
-				(a.vector.y * b.vector.z) - (a.vector.z * b.vector.y);
+(a.vector.y * b.vector.z) - (a.vector.z * b.vector.y);
 	result.y = (a.scalar * b.vector.y) + (a.vector.y * b.scalar) + \
-				(a.vector.z * b.vector.x) - (a.vector.x * b.vector.z);
+(a.vector.z * b.vector.x) - (a.vector.x * b.vector.z);
 	result.z = (a.scalar * b.vector.z) + (a.vector.z * b.scalar) + \
-				(a.vector.x * b.vector.y) - (a.vector.y * b.vector.x);
+(a.vector.x * b.vector.y) - (a.vector.y * b.vector.x);
 	return (result);
 }

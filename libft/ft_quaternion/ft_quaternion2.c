@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 16:55:02 by hsim              #+#    #+#             */
-/*   Updated: 2025/01/11 08:38:32 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/05 18:09:18 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_quat	quaternion_multiply(t_quat q1, t_quat q2)
 	t_quat	result;
 
 	result.scalar = (q1.scalar * q2.scalar) - \
-					scalar_product(q1.vector, q2.vector);
+scalar_product(q1.vector, q2.vector);
 	result.vector = cross_product_quaternion(q1, q2);
 	return (result);
 }
@@ -61,7 +61,7 @@ t_vector3d	quaternion_rotate(t_quat q1, t_vector3d initpoint)
  * right (q1 . q2) = rotation on local axis 
  */
 t_vector3d	quaternion_rotate_adv(t_quat x, t_quat y, t_quat z, \
-								t_vector3d initpoint)
+t_vector3d initpoint)
 {
 	t_quat	qpoint;
 	t_quat	result;

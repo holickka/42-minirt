@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 21:07:58 by hsim              #+#    #+#             */
-/*   Updated: 2024/12/27 21:42:39 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/05 18:13:47 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char *s, int fd);
 void			ft_putendl_fd(char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
+int				ft_perror(char *error_str, int return_value);
 int				ft_basetoi(char *base, char *s, int n);
 
 void			ft_lstadd_front(t_list **lst, t_list *new);

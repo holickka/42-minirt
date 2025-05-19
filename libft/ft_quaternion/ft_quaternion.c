@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:33:14 by hsim              #+#    #+#             */
-/*   Updated: 2024/12/27 21:36:59 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/05 18:07:42 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_quat	conjugate_quaternion(t_quat q1)
 float	len_quaternion(t_quat q1)
 {
 	return (sqrt(ft_square(q1.scalar) + ft_square(q1.vector.x) + \
-				ft_square(q1.vector.y) + ft_square(q1.vector.z)));
+ft_square(q1.vector.y) + ft_square(q1.vector.z)));
 }
 
 /*
