@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:21:10 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/19 18:45:20 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/19 21:15:07 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,14 @@ new_vector3d(viewport[X] / 2, -viewport[Y] / 2, vars.focal_len));
 	viewport_00_center = add_vector(viewport_top_left, \
 new_vector3d(viewport_d.x / 2, viewport_d.y / 2, 0));
 
-	clear_image(vars, WIN_WIDTH, WIN_HEIGHT, 0x000000); //maybe no need
+	// clear_img & put to window (maybe no need)
+	clear_image(vars, WIN_WIDTH, WIN_HEIGHT, 0x000000);
 	mlx_put_image_to_window(vars.mlxconnect, vars.mlxwindow, \
 vars.img.image, 0, 0);
+
+	//draw
 	ft_draw(vars, viewport_00_center, viewport_d);
+	//push draw result to window
 	mlx_put_image_to_window(vars.mlxconnect, vars.mlxwindow, \
 vars.img.image, 0, 0);
 }

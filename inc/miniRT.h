@@ -160,6 +160,10 @@ int		*create_hsv(int h_value, int s_value, int v_value);
 // void	swap_value(int *num1, int *num2);
 int		hsv_to_rgb(int *new_hsv);
 
+/* __________________ utils __________________ */
+float	rand_lcg(unsigned int *seed);
+float	rand_lcg_range(float min, float max, unsigned int *seed);
+
 /* __________________ malloc functions __________________ */
 int		malloc_sph_ptr(t_sph **dest, int num);
 

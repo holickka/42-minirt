@@ -35,16 +35,19 @@ endif
 
 # __________srcs paths__________
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_FILES))
-SRCS_FILES =	main.c 						\
+SRCS_FILES =	\
 				rt_utils_init.c				\
 				rt_utils_malloc.c			\
 				rt_utils_key.c				\
 				rt_utils_ray.c				\
+				rt_utils_rand.c				\
 				rt_utils_draw.c				\
 				rt_utils_color.c			\
 				rt_utils_color2.c			\
 				rt_utils_color5.c			\
-				rt_utils_free.c
+				rt_utils_free.c				\
+				main-test.c 				\
+#				main.c 						
 OBJS = $(SRCS:%.c=%.o)
 
 # __________bonus (if any)__________
