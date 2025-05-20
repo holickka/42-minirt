@@ -116,6 +116,13 @@ typedef struct s_sph
 	float		rad; //radius
 }	t_sph;
 
+// typedef struct s_rgb
+// {
+// 	int	r;
+// 	int	g;
+// 	int	b;
+// }	t_rgb;
+
 // typedef struct s_obj
 // {
 // 	t_vector3d	*plane;
@@ -130,45 +137,56 @@ typedef struct s_vars
 	int			focal_len;
 	int			*color_bg[2];
 	int			count_sph;
+	int			sample_per_pixel; /* sample per pixel*/
 	t_sph		*sph;
 	t_ray		ray;
 	t_vector3d	cam_center;
 	t_imgdata	img;
 }	t_vars;
 
-void	initialize_mlx(t_vars *vars);
-void	init_variable(t_vars *vars);
+void		initialize_mlx(t_vars *vars);
+void		init_variable(t_vars *vars);
 
 /* __________________ img render __________________ */
-void	my_mlx_pixel_put(t_vars vars, int x, int y, int color);
-void	my_create_image(t_vars *vars, t_imgdata *img);
-void	my_render_image(t_vars vars);
-void	clear_image(t_vars vars, int win_width, int win_height, int color);
+void		my_mlx_pixel_put(t_vars vars, int x, int y, int color);
+void		my_create_image(t_vars *vars, t_imgdata *img);
+void		my_render_image(t_vars vars);
+void		clear_image(t_vars vars, int win_width, int win_height, int color);
 
 /* __________________ ray __________________ */
-float	has_hit_sphere(t_vector3d sphere, float radius, t_ray ray);
-int		ray_color(t_vars vars, t_ray ray);
+float		has_hit_sphere(t_vector3d sphere, float radius, t_ray ray);
+t_vector3d	ray_color(t_vars vars, t_ray ray);
+
+// void		ray_color(t_vars vars, t_ray ray, int ptr[3]);
+
+// int			ray_color(t_vars vars, t_ray ray);
+int			sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d, int x);
+t_vector3d	sample_sq_rand(unsigned int *seed);
 
 /* __________________ key configurations __________________ */
-int		close_window(int keycode, t_vars *vars);
-int		close_window_x(int keycode, t_vars *vars);
+int			close_window(int keycode, t_vars *vars);
+int			close_window_x(int keycode, t_vars *vars);
 
 /* __________________ color lerp __________________ */
-int		lerp_hsv(int *hsv1, int *hsv2, float t);
-int		create_rgb(int r_value, int g_value, int b_value);
-int		*create_hsv(int h_value, int s_value, int v_value);
+int			lerp_hsv(int *hsv1, int *hsv2, float t);
+int			create_rgb(int r_value, int g_value, int b_value);
+int			*create_hsv(int h_value, int s_value, int v_value);
 // void	swap_value(int *num1, int *num2);
-int		hsv_to_rgb(int *new_hsv);
+int			hsv_to_rgb(int *new_hsv);
+t_vector3d	split_rgb(int color);
+// void		split_rgb(int color, int ptr[3]);
+
+
 
 /* __________________ utils __________________ */
-float	rand_lcg(unsigned int *seed);
-float	rand_lcg_range(float min, float max, unsigned int *seed);
+float		rand_lcg(unsigned int *seed);
+float		rand_lcg_range(unsigned int *seed, float min, float max);
 
 /* __________________ malloc functions __________________ */
-int		malloc_sph_ptr(t_sph **dest, int num);
+int			malloc_sph_ptr(t_sph **dest, int num);
 
 /* __________________ memory free functions __________________ */
-void	free_malloc(t_vars *vars, int indicator);
+void		free_malloc(t_vars *vars, int indicator);
 
 
 

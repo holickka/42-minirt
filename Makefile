@@ -45,9 +45,11 @@ SRCS_FILES =	\
 				rt_utils_color.c			\
 				rt_utils_color2.c			\
 				rt_utils_color5.c			\
+				rt_utils_color6.c			\
 				rt_utils_free.c				\
-				main-test.c 				\
-#				main.c 						
+				main.c 						
+#				main-test.c 				\
+
 OBJS = $(SRCS:%.c=%.o)
 
 # __________bonus (if any)__________

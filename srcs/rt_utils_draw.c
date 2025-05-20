@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:21:10 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/19 21:15:07 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/20 12:32:53 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,13 @@ static void	ft_draw(t_vars vars, t_vector3d viewport_00, t_vector3d viewport_d)
 		while (++x < WIN_WIDTH)
 		{
 			target.x = viewport_00.x + (x * viewport_d.x);
-			// /*debug*/printf("ft_draw:target:%f %f\n", target.x, target.y);
-			vars.ray.vector = subtract_vector(target, vars.cam_center);
-			/*debug*/printf("ft_draw:tar:%f %f %f\n", target.x, target.y, target.z);
-			// /*debug*/printf("ft_draw:vp:%f %f %f\n", viewport_00.x, viewport_00.y, viewport_00.z);
-			// /*debug*/printf("ft_draw:cam:%f %f %f\n", vars.ray.vector.x, vars.ray.vector.y,  vars.ray.vector.z);
-			color = ray_color(vars, vars.ray);
+			// // /*debug*/printf("ft_draw:target:%f %f\n", target.x, target.y);
+			// vars.ray.vector = subtract_vector(target, vars.cam_center);
+			// /*debug*/printf("ft_draw:tar:%f %f %f\n", target.x, target.y, target.z);
+			// // /*debug*/printf("ft_draw:vp:%f %f %f\n", viewport_00.x, viewport_00.y, viewport_00.z);
+			// // /*debug*/printf("ft_draw:cam:%f %f %f\n", vars.ray.vector.x, vars.ray.vector.y,  vars.ray.vector.z);
+			// color = ray_color(vars, vars.ray);
+			color = sample_pixels(vars, target, viewport_d, x);
 			my_mlx_pixel_put(vars, x, y, color);
 		}
 	}
