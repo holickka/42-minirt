@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 20:18:16 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/20 13:15:30 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/20 18:54:22 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
  * vector from point P on ray -> sphere center C
  * 
  * returns the closest point if there are 2 roots
+ * unsigned int max: 4294967295 as limit num
  * 
  * formula expansion reference:
  * https://raytracing.github.io/books/RayTracingInOneWeekend.html
@@ -34,12 +35,9 @@
 float	has_hit_sphere(t_vector3d sph_orig, float radius, t_ray ray)
 {
 	float		n[3];
-	float		res;
+	float		discriminant;
 	float		tmp;
-	float		uint_max = 4294967295;
 	t_vector3d	ray_to_center;
-
-	(void)	radius;
 
 	/* check all objs/sph to see which is the closest hit */
 
@@ -48,9 +46,8 @@ float	has_hit_sphere(t_vector3d sph_orig, float radius, t_ray ray)
 	n[B] = scalar_product(ray.vector, ray_to_center) + EPS;
 	n[C] = scalar_product(ray_to_center, ray_to_center) - (radius * radius) + EPS;
 
-	res = (n[B] * n[B]) - (n[A] * n[C]);
-	// return (res >= 0);
-	if (res < 0)
+	discriminant = (n[B] * n[B]) - (n[A] * n[C]);
+	if (discriminant < 0)
 		return (-1); // if there's no solution
 	// /*debug*/printf("has_hit_sphere:a:%f\n", a);
 	// /*debug*/printf("has_hit_sphere:%f %f %f\n", a, b, c);
@@ -58,17 +55,14 @@ float	has_hit_sphere(t_vector3d sph_orig, float radius, t_ray ray)
 	// /*debug*/printf("has_hit_sphere:%f\n", res);
 	// /*debug*/printf("has_hit_sphere:%f %f %f\n", ray.vector.x, ray.vector.y, ray.vector.z);
 	// /*debug*/printf("has_hit_sphere:%f %f %f\n", ray_to_center.x, ray_to_center.y, ray_to_center.z);
-	tmp = (n[B] - sqrt(res)) / n[A];
-	if (tmp <= 0 || tmp >= uint_max)
-		tmp = (n[B] + sqrt(res)) / n[A];
-	/*debug*/printf("has_hit_sphere:%f %f\n", res, INFINITY);
+	tmp = (n[B] - sqrt(discriminant)) / n[A];
+	if (tmp <= 0 || tmp >= 4294967295)
+		tmp = (n[B] + sqrt(discriminant)) / n[A];
+	/*debug*/printf("has_hit_sphere:%f %f\n", discriminant, INFINITY);
 
-	if (tmp <= 0 || tmp >= uint_max)
+	if (tmp <= 0 || tmp >= 4294967295)
 		return (-1);
-
 	return (tmp);
-
-	// return ((b - sqrt(res)) / a);
 }
 
 t_vector3d	sample_sq_rand(unsigned int *seed)
@@ -76,7 +70,7 @@ t_vector3d	sample_sq_rand(unsigned int *seed)
 	t_vector3d	pt;
 
 	pt = new_vector3d(rand_lcg(seed) - 0.5, rand_lcg(seed) - 0.5, 0);
-	/*debug*/printf("sample_sq_rand:%f %f %f\n", pt.x, pt.y, pt.z);
+	// /*debug*/printf("sample_sq_rand:%f %f %f\n", pt.x, pt.y, pt.z);
 	return (pt);
 }
 
@@ -112,10 +106,7 @@ int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d, int x)
 		/*debug*/printf("ft_draw:res:%f %f %f\n", res.x, res.y, res.z);
 		// /*debug*/printf("ft_draw:vp:%f %f %f\n", viewport_00.x, viewport_00.y, viewport_00.z);
 		// /*debug*/printf("ft_draw:cam:%f %f %f\n", vars.ray.vector.x, vars.ray.vector.y,  vars.ray.vector.z);
-		// color += ray_color(vars, vars.ray);
-		// ray_color(vars, vars.ray, color);
-		// add_color(f_color, color);
-		color = add_vector(color, ray_color(vars, vars.ray));
+		color = add_vector(color, ray_color(vars, vars.ray, vars.ray_bounce, &seed));
 		/*debug*/printf("color:%f %f %f\n", color.x, color.y, color.z);
 	}
 	color = div_vector_scalar(color, vars.sample_per_pixel);
@@ -146,7 +137,10 @@ int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d, int x)
 //     // }
 // }
 
-/* 3d point along a vector ray */
+/*
+ * 3d point along a vector ray
+ * vec = origin + (t * direction)
+ */
 t_vector3d	point_at(float t, t_ray r)
 {
 	return (add_vector(r.origin, multiply_vector_scalar(r.vector, t)));
@@ -171,7 +165,7 @@ t_vector3d	get_surf_norm(t_ray ray, t_vector3d sph_center, float t)
 	// means they're pointing in same direction
 	// == ray comes from inside
 	// so, reverse surf_norm if so
-	if (scalar_product(ray.vector, surf_norm) > 0)
+	if (scalar_product(ray.vector, surf_norm) > 0) // pointing in same direction
 		surf_norm = multiply_vector_scalar(surf_norm, -1);
 	return (surf_norm);
 }
@@ -181,7 +175,7 @@ t_vector3d	get_surf_norm(t_ray ray, t_vector3d sph_center, float t)
  * checks if ray hits any surface
  * returns the closest point ray hits
  */
-bool	hit(t_vars vars, int ray_max, t_vector3d *pt_ray)
+bool	hit(t_vars vars, t_ray ray, t_vector3d *surf_norm, t_vector3d *at)
 {
 	int			x;
 	float		t;
@@ -190,17 +184,19 @@ bool	hit(t_vars vars, int ray_max, t_vector3d *pt_ray)
 
 	x = -1;
 	res = 0;
-	min = ray_max;
+	min = 2147483647;
+	// min = INFINITY;
 	while (++x < vars.count_sph)
 	{
 		/*debug*/printf("id:%d\n", x);
-		t = has_hit_sphere(vars.sph[x].orig, vars.sph[x].rad, vars.ray);
+		t = has_hit_sphere(vars.sph[x].orig, vars.sph[x].rad, ray);
 		/*debug*/printf("has_hit_sphere:t:%f\n", t);
-		if (t > 0 && t < min)
+		if (t >= 0.001 && t <= min)
 		{
 			res = 1;
 			min = t;
-			*pt_ray = get_surf_norm(vars.ray, vars.sph[x].orig, t);
+			*at = add_vector(ray.origin, multiply_vector_scalar(ray.vector, t));
+			*surf_norm = get_surf_norm(ray, vars.sph[x].orig, t);
 		}
 	}
 	return (res);
@@ -211,32 +207,32 @@ bool	hit(t_vars vars, int ray_max, t_vector3d *pt_ray)
  * checks if ray hits any object
  * defines what color should the ray be
  */
-t_vector3d	ray_color(t_vars vars, t_ray ray)//, int ptr[3])
+t_vector3d	ray_color(t_vars vars, t_ray ray, unsigned char ray_bounce, unsigned int *seed)
 {
 	float		t;
-	t_vector3d	pt_ray;
+	t_ray		bounce;
+	t_vector3d	surf_norm;
 	t_vector3d	color;
-	// float		ratio = 1 / vars.sample_per_pixel;
 
-	(void)	vars;
+	if (ray_bounce <= 0)
+		return (new_vector3d(0, 0, 0));
 
 	// ray_norm = norm_vector3d(ray.vector);
 	// if (has_hit_sphere(new_vector3d(0, 0, -1), radius, ray))
 		// return (0xFF8080);
 
-	if (hit(vars, 2147483647, &pt_ray))
-		return (new_vector3d(0.5*255*(pt_ray.x+1),
-0.5*255*(pt_ray.y+1),
-0.5*255*(pt_ray.z+1)));
-	// {
-	// 	ptr[R] = 0.5*255*(pt_ray.x+1);
-	// 	ptr[G] = 0.5*255*(pt_ray.y+1);
-	// 	ptr[B] = 0.5*255*(pt_ray.z+1);
-	// 	return ;
-	// }
+	if (hit(vars, ray, &surf_norm, &bounce.origin))
+	{
+		/* create new direction vector frm hit point */
+		bounce.vector = rand_on_hemisphere(seed, surf_norm);
+		return (div_vector_scalar(ray_color(vars, bounce, ray_bounce - 1, seed), 2));
+
+// 		return (new_vector3d(0.5*255*(surf_norm.x+1), \
+// 0.5*255*(surf_norm.y+1), \
+// 0.5*255*(surf_norm.z+1)));
+	}
 
 	/* else render sky bg */
-	// ray_norm = ray.vector;
 	t = (ray.vector.y + 1) / 2;
 	// vec.y ranges from -1 to 1, add 1 makes it positive,
 	// div 2 makes it 1

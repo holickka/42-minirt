@@ -41,7 +41,7 @@
 # endif
 
 # ifndef EPS
-#  define EPS 0.0001
+#  define EPS 0.00001
 # endif
 
 # ifndef ROUND_UP
@@ -132,16 +132,17 @@ typedef struct s_sph
 
 typedef struct s_vars
 {
-	void		*mlxconnect;
-	void		*mlxwindow;
-	int			focal_len;
-	int			*color_bg[2];
-	int			count_sph;
-	int			sample_per_pixel; /* sample per pixel*/
-	t_sph		*sph;
-	t_ray		ray;
-	t_vector3d	cam_center;
-	t_imgdata	img;
+	void			*mlxconnect;
+	void			*mlxwindow;
+	int				focal_len;
+	int				*color_bg[2];
+	int				count_sph;
+	int				sample_per_pixel;
+	unsigned char	ray_bounce; /* how many times a ray should bounce */
+	t_sph			*sph;
+	t_ray			ray;
+	t_vector3d		cam_center;
+	t_imgdata		img;
 }	t_vars;
 
 void		initialize_mlx(t_vars *vars);
@@ -155,10 +156,7 @@ void		clear_image(t_vars vars, int win_width, int win_height, int color);
 
 /* __________________ ray __________________ */
 float		has_hit_sphere(t_vector3d sphere, float radius, t_ray ray);
-t_vector3d	ray_color(t_vars vars, t_ray ray);
-
-// void		ray_color(t_vars vars, t_ray ray, int ptr[3]);
-
+t_vector3d	ray_color(t_vars vars, t_ray ray, unsigned char ray_bounce, unsigned int *seed);
 // int			ray_color(t_vars vars, t_ray ray);
 int			sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d, int x);
 t_vector3d	sample_sq_rand(unsigned int *seed);
@@ -176,11 +174,16 @@ int			hsv_to_rgb(int *new_hsv);
 t_vector3d	split_rgb(int color);
 // void		split_rgb(int color, int ptr[3]);
 
-
-
-/* __________________ utils __________________ */
+/* __________________ random utils __________________ */
 float		rand_lcg(unsigned int *seed);
 float		rand_lcg_range(unsigned int *seed, float min, float max);
+t_vector3d	rand_vec(unsigned int *seed);
+t_vector3d	rand_vec_range(unsigned int *seed, float min, float max);
+t_vector3d	norm_rand_vec(unsigned int *seed);
+t_vector3d	rand_on_hemisphere(unsigned int *seed, t_vector3d surf_norm);
+
+// t_vector3d	norm_rand_vec(unsigned int *seed, t_vector3d surf_norm);
+
 
 /* __________________ malloc functions __________________ */
 int			malloc_sph_ptr(t_sph **dest, int num);

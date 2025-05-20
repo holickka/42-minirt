@@ -15,6 +15,12 @@ https://www.gabrielgambetta.com/computer-graphics-from-scratch/02-basic-raytraci
 
 https://www.realtimerendering.com/raytracing.html
 
+[Vector dot product](https://youtu.be/ayiI1pYdujI?si=Hx3tvD3R2SW92ikA)
+
+[Short explaination of dot product shows 2 vectors in similar or opposite direction](https://youtu.be/2PrSUK1VrKA?si=zBUXAkeZcYTvpbtU)
+
+https://youtu.be/ebzlMOw79Yw?si=E7u7UQfy6_-x9bzU
+
 [A Pixel Is Not A Little Square](https://www.researchgate.net/publication/244986797_A_Pixel_Is_Not_A_Little_Square_A_Pixel_Is_Not_A_Little_Square_A_Pixel_Is_Not_A_Little_Square)
 
 [List of Random Number Generators](https://en.wikipedia.org/wiki/List_of_random_number_generators#Pseudorandom_number_generators_(PRNGs))
