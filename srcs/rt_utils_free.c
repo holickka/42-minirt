@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:09:49 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/07 13:32:28 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/15 22:43:47 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_malloc(t_vars *vars, int indicator)
 {
 	if (!vars)
 		return ;
-	free_assign_hsv(vars->color_bg, 2);
+	// free_assign_hsv(vars->color_bg, 2);
 	free_one(vars->mlxconnect);
 	free(vars->sph);
 	if (indicator > 0)

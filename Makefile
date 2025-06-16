@@ -44,9 +44,11 @@ SRCS_FILES =	\
 				rt_utils_draw.c				\
 				rt_utils_color.c			\
 				rt_utils_color2.c			\
+				rt_utils_color3.c			\
 				rt_utils_color5.c			\
 				rt_utils_color6.c			\
 				rt_utils_free.c				\
+				rt_utils.c					\
 				main.c 						
 #				main-test.c 				\
 
@@ -57,7 +59,7 @@ OBJS = $(SRCS:%.c=%.o)
 #BONUS_OBJS = $(BONUS_FILES:%.c=%.o)
 
 CC = cc
-FSAN = -fsanitize=address -g3
+#FSAN = -fsanitize=address -g3
 INCS = -I$(INC_PATH) -I$(LIBFT_PATH) -I$(PRINTF_PATH) -I$(QUAT_PATH) -I$(LIBMLX_PATH)
 FLAGS = -Wall -Wextra -Werror $(FSAN) $(INCS)
 

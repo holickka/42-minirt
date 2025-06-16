@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:45:50 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/20 15:56:51 by hsim             ###   ########.fr       */
+/*   Updated: 2025/05/22 20:44:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,28 @@ int main()
 	// sample_sq_rand(&seed);
 	// sample_sq_rand(&seed);
 	/* __________________ rand_vec __________________*/
-	unsigned int seed = 12345; // You can change this seed
-	t_vector3d	res;
-	int	x = -1;
+	// unsigned int seed = 12345; // You can change this seed
+	// t_vector3d	res;
+	// int	x = -1;
 	// res = rand_vec(&seed);
-
+	
 	// res = new_vector3d(-2, -2, -2);
 	// while (res.x == -2)
 	// 	res = norm_rand_vec(&seed);
+	
+	/* __________________ rand_on_hemisphere __________________*/
+	// unsigned int seed = 12345; // You can change this seed
+	// t_vector3d	res;
+	// int	x = -1;
+	// while (++x < 3)
+	// {
+	// 	res = rand_on_hemisphere(&seed, new_vector3d(0.5, 1, 1));
+	// 	printf("res: %f %f %f\n", res.x, res.y, res.z);
+	// }
 
-	while (++x < 3)
-	{
-		res = rand_on_hemisphere(&seed, new_vector3d(0.5, 1, 1));
-		printf("res: %f %f %f\n", res.x, res.y, res.z);
-	}
+	/* __________________ near_zero __________________*/
+	t_vector3d vec = new_vector3d(0, 1, 0);
+	printf("%d\n", is_near_zero(vec));
 
 	/* __________________ retrieve_rgb __________________*/
 	// int	c[3];

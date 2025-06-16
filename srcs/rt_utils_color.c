@@ -6,21 +6,11 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 08:00:56 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/06 17:53:11 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/15 19:12:51 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-/*
- * input values ranges frm 0 to 255
- * returns a rgb value
- */
-int	create_rgb(int r_value, int g_value, int b_value)
-{
-	// /*debug*/printf("create_rgb:%d %d %d\n", r_value, g_value, b_value);
-	return (r_value << 16 | g_value << 8 | b_value);
-}
 
 /*
  * h_value = degree of hue from 0 to 360deg, dont put 1deg
@@ -33,7 +23,7 @@ int	*create_hsv(int h_value, int s_value, int v_value)
 	int	*new_hsv;
 
 	if (h_value < 0 || h_value > 360 || s_value < 0 || s_value > 100 \
-		|| v_value < 0 || v_value > 100)
+|| v_value < 0 || v_value > 100)
 	{
 		ft_printf("🚨 current HSV=%d %d %d\n", h_value, s_value, v_value);
 		ft_printf("🚨 HSV values must be between 360deg and 0-100");

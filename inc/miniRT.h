@@ -75,6 +75,12 @@ enum	e_quadratic_values
 	C = 1
 };
 
+enum	e_material_type
+{
+	DIFFUSE,
+	METAL
+};
+
 enum	e_hsv_values
 {
 	H = 0,
@@ -95,6 +101,9 @@ enum	e_rgb_values
 	BRG = 2
 };
 
+typedef unsigned char	t_uchar;
+typedef unsigned int	t_uint;
+
 typedef struct s_imgdata
 {
 	void		*image;
@@ -110,10 +119,18 @@ typedef struct s_ray
 	t_vector3d	vector;
 }	t_ray;
 
+typedef struct s_mat
+{
+	t_uchar		type; //material type
+	t_vector3d	albedo; //obj base color
+}	t_mat;
+
 typedef struct s_sph
 {
 	t_vector3d	orig; //origin
 	float		rad; //radius
+	t_mat		mat;
+
 }	t_sph;
 
 // typedef struct s_rgb
@@ -135,7 +152,8 @@ typedef struct s_vars
 	void			*mlxconnect;
 	void			*mlxwindow;
 	int				focal_len;
-	int				*color_bg[2];
+	// int				*color_bg[2];
+	t_vector3d		color_bg[2];
 	int				count_sph;
 	int				sample_per_pixel;
 	unsigned char	ray_bounce; /* how many times a ray should bounce */
@@ -157,6 +175,9 @@ void		clear_image(t_vars vars, int win_width, int win_height, int color);
 /* __________________ ray __________________ */
 float		has_hit_sphere(t_vector3d sphere, float radius, t_ray ray);
 t_vector3d	ray_color(t_vars vars, t_ray ray, unsigned char ray_bounce, unsigned int *seed);
+t_vector3d	ray_color_loop(t_vars vars, t_ray ray, unsigned int *seed);
+t_ray		new_ray(t_vector3d origin, t_vector3d dir);
+
 // int			ray_color(t_vars vars, t_ray ray);
 int			sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d, int x);
 t_vector3d	sample_sq_rand(unsigned int *seed);
@@ -167,6 +188,7 @@ int			close_window_x(int keycode, t_vars *vars);
 
 /* __________________ color lerp __________________ */
 int			lerp_hsv(int *hsv1, int *hsv2, float t);
+t_vector3d	lerp_rgb(t_vector3d c1, t_vector3d c2, float t);
 int			create_rgb(int r_value, int g_value, int b_value);
 int			*create_hsv(int h_value, int s_value, int v_value);
 // void	swap_value(int *num1, int *num2);
@@ -174,7 +196,10 @@ int			hsv_to_rgb(int *new_hsv);
 t_vector3d	split_rgb(int color);
 // void		split_rgb(int color, int ptr[3]);
 
-/* __________________ random utils __________________ */
+/* __________________ utils __________________ */
+bool	is_near_zero(t_vector3d vec);
+
+/* __________________ random __________________ */
 float		rand_lcg(unsigned int *seed);
 float		rand_lcg_range(unsigned int *seed, float min, float max);
 t_vector3d	rand_vec(unsigned int *seed);
@@ -183,7 +208,6 @@ t_vector3d	norm_rand_vec(unsigned int *seed);
 t_vector3d	rand_on_hemisphere(unsigned int *seed, t_vector3d surf_norm);
 
 // t_vector3d	norm_rand_vec(unsigned int *seed, t_vector3d surf_norm);
-
 
 /* __________________ malloc functions __________________ */
 int			malloc_sph_ptr(t_sph **dest, int num);

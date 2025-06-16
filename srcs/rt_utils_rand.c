@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:15:24 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/20 18:11:11 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/15 21:28:30 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static unsigned int	lcg(unsigned int *seed)
 
 /*
  * enter a seed number,
- * returns a random float number, based on lcg algorithm
+ * returns a random float number between 0 to 1, based on lcg algorithm
  */
 float	rand_lcg(unsigned int *seed)
 {
@@ -47,6 +47,7 @@ float	rand_lcg_range(unsigned int *seed, float min, float max)
 	return (min + ((max - min) * (float)lcg(seed) / 0xFFFFFFFF));
 }
 
+/* return a random vector with xyz between 0 to 1 */
 t_vector3d	rand_vec(unsigned int *seed)
 {
 	t_vector3d	res;
@@ -78,19 +79,19 @@ t_vector3d	norm_rand_vec(unsigned int *seed)//, t_vector3d surf_norm)
 }
 
 /* returns a random vector that lies on sphere surface */
-t_vector3d	rand_on_hemisphere(unsigned int *seed, t_vector3d surf_norm)
-{
-	t_vector3d	vec;
+// t_vector3d	rand_on_hemisphere(unsigned int *seed, t_vector3d surf_norm)
+// {
+// 	t_vector3d	vec;
 
-	vec = new_vector3d(-2, -2, -2);
-	while (vec.x == -2)
-		vec = norm_rand_vec(seed);
-	// /*debug*/printf("rand_on_h:%f %f %f\n", vec.x, vec.y, vec.z);
-	if (scalar_product(vec, surf_norm) <= 0)
-		return (multiply_vector_scalar(vec, -1));
-	// /*debug*/printf("rand_on_h:dot: %f\n", scalar_product(vec, surf_norm));
-	return (vec);
-}
+// 	vec = new_vector3d(-2, -2, -2);
+// 	while (vec.x == -2)
+// 		vec = norm_rand_vec(seed);
+// 	// /*debug*/printf("rand_on_h:%f %f %f\n", vec.x, vec.y, vec.z);
+// 	if (scalar_product(vec, surf_norm) <= 0)
+// 		return (multiply_vec_scalar(vec, -1));
+// 	// /*debug*/printf("rand_on_h:dot: %f\n", scalar_product(vec, surf_norm));
+// 	return (vec);
+// }
 
 t_vector3d	rand_vec_range(unsigned int *seed, float min, float max)
 {

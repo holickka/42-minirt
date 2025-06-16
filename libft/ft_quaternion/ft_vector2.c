@@ -6,18 +6,33 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 16:56:34 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/07 12:21:44 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/15 15:33:55 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_vector.h"
 
 /*
- * Calculates scalar/dot product of given vector
+ * multiply 2 vectors together, return single number
+ * Calculates scalar product / dot product of given vectors
  */
 float	scalar_product(t_vector3d a, t_vector3d b)
 {
 	return ((a.x * b.x) + (a.y * b.y) + (a.z * b.z));
+}
+
+/*
+ * officially known as hadamart product,
+ * returns a.x * b.x,  a.y * b.y,  a.z * b.z
+ */
+t_vector3d	multiply_vec(t_vector3d a, t_vector3d b)
+{
+	t_vector3d	res;
+
+	res.x = a.x * b.x;
+	res.y = a.y * b.y;
+	res.z = a.z * b.z;
+	return (res);
 }
 
 /*
