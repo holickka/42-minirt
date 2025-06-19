@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:15:24 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/15 21:28:30 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/19 11:44:57 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,25 @@ t_vector3d	rand_vec(unsigned int *seed)
  * generate & returns a random unit vector that lies within the unit sphere
  * len_sq <= 1 is to make sure the vector is within sphere (with unit len of 1)
  */
-t_vector3d	norm_rand_vec(unsigned int *seed)//, t_vector3d surf_norm)
+t_vector3d	rand_unit_vec(unsigned int *seed)//, t_vector3d surf_norm)
 {
-	t_vector3d	res;
+	t_vector3d	pt;
 	float		len_sq;
 
-	res = rand_vec_range(seed, -1, 1);
-	// /*debug*/printf("gen: %f %f %f\n", res.x, res.y, res.z);
-	len_sq = (res.x * res.x) + \
-(res.y * res.y) + \
-(res.z * res.z);
-	if (len_sq > 0.00001f && len_sq <= 1)
+	while (1)
 	{
-		len_sq = sqrt(len_sq);
-		return (div_vector_scalar(res, len_sq));
+		pt = rand_vec_range(seed, -1, 1);
+		// /*debug*/printf("gen: %f %f %f\n", res.x, res.y, res.z);
+		len_sq = (pt.x * pt.x) + \
+(pt.y * pt.y) + \
+(pt.z * pt.z);
+	// if (len_sq > 1e-160 && len_sq <= 1)
+		if (len_sq > 0.00001f && len_sq <= 1)
+		{
+			len_sq = sqrt(len_sq);
+			return (div_vector_scalar(pt, len_sq));
+		}
 	}
-	return (new_vector3d(-2, -2, -2));
 }
 
 /* returns a random vector that lies on sphere surface */

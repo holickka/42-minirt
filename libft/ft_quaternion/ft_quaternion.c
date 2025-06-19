@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:33:14 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/15 12:24:06 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/16 21:06:15 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 float	ft_square(float num)
 {
 	return (num * num);
+}
+
+/* converts degree to radian */
+float	radian(float deg)
+{
+	return ((deg * M_PI) / 180);
 }
 
 /* 
@@ -28,7 +34,8 @@ t_quat	new_quaternion(t_vector3d axis, float deg)
 	t_quat	q;
 	float	rad;
 
-	rad = (deg * M_PI) / 180;
+	// rad = (deg * M_PI) / 180;
+	rad = radian(deg);
 	q.scalar = cos(rad / 2);
 	q.vector = multiply_vec_scalar(axis, sin(rad / 2));
 	return (q);

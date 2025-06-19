@@ -42,15 +42,15 @@ SRCS_FILES =	\
 				rt_utils_ray.c				\
 				rt_utils_rand.c				\
 				rt_utils_draw.c				\
-				rt_utils_color.c			\
-				rt_utils_color2.c			\
 				rt_utils_color3.c			\
-				rt_utils_color5.c			\
 				rt_utils_color6.c			\
 				rt_utils_free.c				\
 				rt_utils.c					\
 				main.c 						
 #				main-test.c 				\
+#				rt_utils_color.c			\
+#				rt_utils_color2.c			\
+#				rt_utils_color5.c			\
 
 OBJS = $(SRCS:%.c=%.o)
 

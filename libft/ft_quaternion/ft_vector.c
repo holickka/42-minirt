@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 16:36:20 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/20 15:03:24 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/18 11:43:23 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,16 @@ float	len_vector3d(t_vector3d vector)
 }
 
 /* Normalize vector into unit vector */
-t_vector3d	norm_vector3d(t_vector3d vector)
+t_vector3d	unit_vector3d(t_vector3d vector)
 {
-	float	length;
+	float	len;
 
-	length = len_vector3d(vector);
-	if (length >= 0.00001f)
-		return (new_vector3d(vector.x / length, \
-vector.y / length, \
-vector.z / length));
-	return (vector);
+	len = len_vector3d(vector);
+	if (len >= 0.00001f)
+		return (new_vector3d(vector.x / len, \
+vector.y / len, \
+vector.z / len));
+	return (new_vector3d(0, 0, 0));
 }
 
 /* Add vector + vector */
@@ -55,8 +55,8 @@ t_vector3d	add_vector(t_vector3d a, t_vector3d b)
 	return (result);
 }
 
-/* Subtract vector + vector */
-t_vector3d	subtract_vector(t_vector3d a, t_vector3d b)
+/* return vector a minus vector b */
+t_vector3d	subtract_vec(t_vector3d a, t_vector3d b)
 {
 	t_vector3d	result;
 

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:05:22 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/16 18:53:21 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/19 12:22:49 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,24 @@ t_sph	new_sphere(t_vector3d position, float sph_radius, t_vector3d color, t_ucha
 
 void	init_variable(t_vars *vars)
 {
-	vars->cam_center = new_vector3d(0, 0, 0);
-	vars->ray.origin = vars->cam_center; //be careful with this one, maybe copy safer?
+	vars->cam_orig = new_vector3d(0, 0, 2); //-2,2,1
+	vars->cam_lookat = new_vector3d(0, 0, -1);
+	vars->vup = new_vector3d(0, 1, 0);
+	vars->vfov = radian(90);
+	vars->focal_len = len_vector3d(subtract_vec(vars->cam_orig, vars->cam_lookat));
+	/*debug*/printf("focal_len:%f %d\n", vars->focal_len, (int)len_vector3d(subtract_vec(vars->cam_orig, vars->cam_lookat)));
+
+	vars->ray.orig = vars->cam_orig; //be careful with this one, maybe copy safer?
 	vars->ray.vector = new_vector3d(0, 0, 0);
 
 	vars->ray_bounce = 5;
-	vars->sample_per_pixel = 100;
-	vars->focal_len = 1;
+	vars->sample_per_pixel = 5;
 
 	// vars->color_bg[0] = create_hsv(199, 100, 100);
 	// vars->color_bg[1] = create_hsv(166, 10, 90);
 
 	vars->color_bg[0] = new_vector3d(0.5, 0.7, 1);
 	vars->color_bg[1] = new_vector3d(1, 1, 1);
-	// vars->color_bg[0] = new_vector3d(0, 0.7, 1);
-	// vars->color_bg[1] = new_vector3d(0, 1, 1);
 	// vars->color_bg[0] = new_vector3d(0, 178, 255);
 	// vars->color_bg[1] = new_vector3d(0, 255, 255);
 	// vars->color_bg[1] = create_hsv(225, 62, 40);
@@ -68,6 +71,13 @@ void	init_variable(t_vars *vars)
 	/* init sphere objects, use malloc */
 	vars->count_sph = 4;
 	malloc_sph_ptr(&vars->sph, vars->count_sph);
+
+	// float r = cos(M_PI / 4);
+// 	vars->sph[0] = new_sphere(new_vector3d(r, 0, -1), r, \
+// new_vector3d(0, 0, 1), DIFFUSE); //left
+// 	vars->sph[1] = new_sphere(new_vector3d(-r, 0, -1), r, \
+// new_vector3d(1, 0, 0), DIFFUSE); //right
+
 	vars->sph[0] = new_sphere(new_vector3d(0, 0, -1.2), 0.5, \
 new_vector3d(0.1, 0.2, 0.5), DIFFUSE); //center
 	vars->sph[1] = new_sphere(new_vector3d(0, -100.5, -1), 100, \

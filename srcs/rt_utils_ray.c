@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 20:18:16 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/16 19:05:25 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/19 12:24:07 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ float	has_hit_sphere(t_vector3d sph_orig, float radius, t_ray ray)
 	float		tmp;
 	t_vector3d	ray_to_center;
 
-	ray_to_center = subtract_vector(sph_orig, ray.origin);
+	ray_to_center = subtract_vec(sph_orig, ray.orig);
 	n[A] = scalar_product(ray.vector, ray.vector) + EPS;
 	n[B] = scalar_product(ray.vector, ray_to_center) + EPS;
 	n[C] = scalar_product(ray_to_center, ray_to_center) - \
@@ -102,11 +102,25 @@ t_vector3d	color_correction(t_vector3d color)
 	return (res);
 }
 
+// void	get_ray(int x, int y, t_ray *ray, t_vector3d viewport_00, t_vector3d viewport_d[2])
+// {
+// 	unsigned int	seed;
+// 	t_vector3d		offset;
+// 	t_vector3d		target;
+
+// 	offset = sample_sq_rand(&seed);
+// 	target = add_vector(viewport_00, \
+// add_vector(multiply_vec_scalar(viewport_d[U], (x + offset.x)), \
+// multiply_vec_scalar(viewport_d[V], (y + offset.y))));
+
+// 	ray->vector = subtract_vec(target, ray->orig);
+// }
+
 /*
  * generate random sampling point on pixels
  * and return the color sampled
  */
-int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d, int x)
+int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d[2], int x)
 {
 	int				k;
 	unsigned int	seed;
@@ -121,16 +135,24 @@ int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d, int x)
 	while (++k < vars.sample_per_pixel)
 	{
 		offset = sample_sq_rand(&seed);
-		res.x = target.x + (offset.x * viewport_d.x);
-		res.y = target.y + (offset.y * viewport_d.y);
+		// res.x = target.x + (offset.x * viewport_d.x);
+		// res.y = target.y + (offset.y * viewport_d.y);
+		res.x = target.x + (offset.x * viewport_d[X].x) + \
+(offset.y * viewport_d[Y].x);
+		res.y = target.y + (offset.y * viewport_d[Y].y) + \
+(offset.x * viewport_d[X].y);
 
-		// get_ray
-		// 0.5 + ((1 + 0.1) * 0.54)
-		// 0.5 + (1 * 0.54) + (0.1 * 0.54)
+		// res = add_vector(target, add_vector(\
+// multiply_vec_scalar(viewport_d[X], offset.x), multiply_vec_scalar(viewport_d[Y], offset.y)));
 
-		vars.ray.vector = subtract_vector(res, vars.cam_center);
+		// auto pixel_sample = pixel00_loc
+		//						+ ((i + offset.x()) * pixel_delta_u)
+		//						+ ((j + offset.y()) * pixel_delta_v);
+
+		vars.ray.vector = subtract_vec(res, vars.cam_orig);
 		/*debug*/printf("ft_draw:tar:%f %f %f\n", target.x, target.y, target.z);
 		/*debug*/printf("ft_draw:res:%f %f %f\n", res.x, res.y, res.z);
+
 		// /*debug*/printf("ft_draw:cam:%f %f %f\n", vars.ray.vector.x, vars.ray.vector.y,  vars.ray.vector.z);
 		// color = add_vector(color, ray_color_loop(vars, vars.ray, &seed));
 		color = add_vector(color, ray_color(vars, vars.ray, vars.ray_bounce, &seed));
@@ -149,7 +171,7 @@ int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d, int x)
  */
 t_vector3d	point_at(float t, t_ray r)
 {
-	return (add_vector(r.origin, multiply_vec_scalar(r.vector, t)));
+	return (add_vector(r.orig, multiply_vec_scalar(r.vector, t)));
 }
 
 /*
@@ -164,9 +186,9 @@ t_vector3d	get_surf_norm(t_ray ray, t_vector3d sph_center, float t)
 	t_vector3d	surf_norm;
 
 	// also known as set_face_normal
-	pt_ray = add_vector(ray.origin, multiply_vec_scalar(ray.vector, t)); // .at
-	surf_norm = subtract_vector(pt_ray, sph_center);
-	surf_norm = norm_vector3d(surf_norm); // div by radius
+	pt_ray = add_vector(ray.orig, multiply_vec_scalar(ray.vector, t)); // .at
+	surf_norm = subtract_vec(pt_ray, sph_center);
+	surf_norm = unit_vector3d(surf_norm); // div by radius
 	// so, reverse surf_norm if so
 	if (scalar_product(ray.vector, surf_norm) > 0) // pointing in same direction
 		surf_norm = multiply_vec_scalar(surf_norm, -1);
@@ -178,7 +200,7 @@ t_ray	new_ray(t_vector3d origin, t_vector3d dir)
 {
 	t_ray	ray;
 
-	ray.origin = origin;
+	ray.orig = origin;
 	ray.vector = dir;
 	return (ray);
 }
@@ -208,10 +230,20 @@ int	hit(t_vars vars, t_ray ray, t_vector3d *surf_norm, t_vector3d *at)
 		{
 			res = x;
 			min = t;
-			*at = add_vector(ray.origin, multiply_vec_scalar(ray.vector, t));
+			*at = add_vector(ray.orig, multiply_vec_scalar(ray.vector, t));
 			*surf_norm = get_surf_norm(ray, vars.sph[x].orig, t);
 		}
 	}
+	return (res);
+}
+
+t_vector3d	simulate_fuzz(t_vector3d bounce_ray, float fuzz, unsigned int *seed)
+{
+	t_vector3d	res;
+
+	if (fuzz > 1)
+		fuzz = 1;
+	res = add_vector(bounce_ray, multiply_vec_scalar(rand_unit_vec(seed), fuzz));
 	return (res);
 }
 
@@ -222,14 +254,18 @@ int	hit(t_vars vars, t_ray ray, t_vector3d *surf_norm, t_vector3d *at)
  * * surf_norm
  * = magnitude * dir
  */
-t_vector3d	mat_metal(t_vector3d incoming_ray, t_vector3d surf_norm)
+t_vector3d	mat_metal(t_vector3d incoming_ray, t_vector3d surf_norm, \
+float fuzz, unsigned int *seed)
 {
 	t_vector3d	bounce_ray;
 	float		magnitude;
 
 	magnitude = 2 * (scalar_product(incoming_ray, surf_norm));
 	bounce_ray = multiply_vec_scalar(surf_norm, magnitude);
-	return (subtract_vector(incoming_ray, bounce_ray));
+	bounce_ray = unit_vector3d(subtract_vec(incoming_ray, bounce_ray));
+	if (fuzz > 0.0)
+		bounce_ray = simulate_fuzz(bounce_ray, fuzz, seed);
+	return (bounce_ray);
 }
 
 /* get reflected ray direction when when surface material is diffuse */
@@ -237,7 +273,7 @@ t_vector3d	mat_lambertian(t_vector3d surf_norm, unsigned int *seed)
 {
 	t_vector3d	res;
 
-	res = add_vector(surf_norm, rand_vec(seed));
+	res = add_vector(surf_norm, rand_vec(seed)); //rand_unit_vec
 	if (is_near_zero(res))
 		res = surf_norm;
 	return (res);
@@ -258,11 +294,11 @@ unsigned int *seed)
 
 	if (ray_bounce <= 0)
 		return (new_vector3d(0, 0, 0));
-	state = hit(vars, ray, &surf_norm, &bounce.origin);
+	state = hit(vars, ray, &surf_norm, &bounce.orig);
 	if (state >= 0) //assigns surf_norm here
 	{
 		if (vars.sph[state].mat.type == METAL)
-			bounce.vector = mat_metal(ray.vector, surf_norm);
+			bounce.vector = mat_metal(ray.vector, surf_norm, 0, seed);
 		else if (vars.sph[state].mat.type == DIFFUSE)
 			bounce.vector = mat_lambertian(surf_norm, seed);
 		return (multiply_vec(ray_color(vars, bounce, ray_bounce - 1, seed), \
@@ -276,6 +312,7 @@ vars.sph[state].mat.albedo));
 	}
 
 	/* else render sky bg */
+	ray.vector.y /= len_vector3d(ray.vector); //unit vector
 	t = (ray.vector.y + 1) / 2;
 	// vec.y ranges from -1 to 1, add 1 makes it positive, div 2 makes it 1
 
@@ -302,7 +339,7 @@ vars.sph[state].mat.albedo));
 // 	color = sky;
 // 	while (++k < vars.ray_bounce)
 // 	{
-// 		if (hit(vars, bounce, &surf_norm, &bounce.origin))
+// 		if (hit(vars, bounce, &surf_norm, &bounce.orig))
 // 		{
 // 			bounce.vector = rand_on_hemisphere(seed, surf_norm);
 // 			factor /= 2;

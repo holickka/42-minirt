@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:20:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/15 12:24:18 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/18 21:40:47 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,13 @@ t_vector3d	multiply_vec_scalar(t_vector3d a, float s)
 {
 	t_vector3d	result;
 
-	result.x = a.x * s;
-	result.y = a.y * s;
-	result.z = a.z * s;
+	result = new_vector3d(0, 0, 0);
+	if (a.x != 0)
+		result.x = a.x * s;
+	if (a.y != 0)
+		result.y = a.y * s;
+	if (a.z != 0)
+		result.z = a.z * s;
 	return (result);
 }
 
