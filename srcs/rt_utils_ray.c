@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 20:18:16 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/19 12:24:07 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 18:04:32 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,28 @@ t_vector3d	sample_sq_rand(unsigned int *seed)
 	return (pt);
 }
 
+/*
+ * child function in sample_pixels 
+ * return a random defoc_disk vector for disk sampling
+ */
+t_vector3d	sample_defoc_disk(t_vars vars, unsigned int *seed)
+{
+	t_vector3d	pt;
+	t_vector3d	res;
+
+	pt = rand_unit_disk(seed);
+	// res = vars.cam_orig;
+	res = add_vec(vars.cam_orig, add_vec(mult_vec_scalar(\
+vars.defoc_disk[X], pt.x), mult_vec_scalar(vars.defoc_disk[Y], pt.y)));
+	/*debug*/debug_print_vec("sample_defoc:cam:", vars.cam_orig);
+	/*debug*/debug_print_vec("sample_defoc:x:", vars.defoc_disk[X]);
+	/*debug*/debug_print_vec("sample_defoc:y:", vars.defoc_disk[Y]);
+	/*debug*/debug_print_vec("sample_defoc:pt:", pt);
+	/*debug*/debug_print_vec("sample_defoc:res:", res);
+
+	return (res);
+}
+
 static float	linear_to_gamma(float n)
 {
 	float	res;
@@ -102,20 +124,6 @@ t_vector3d	color_correction(t_vector3d color)
 	return (res);
 }
 
-// void	get_ray(int x, int y, t_ray *ray, t_vector3d viewport_00, t_vector3d viewport_d[2])
-// {
-// 	unsigned int	seed;
-// 	t_vector3d		offset;
-// 	t_vector3d		target;
-
-// 	offset = sample_sq_rand(&seed);
-// 	target = add_vector(viewport_00, \
-// add_vector(multiply_vec_scalar(viewport_d[U], (x + offset.x)), \
-// multiply_vec_scalar(viewport_d[V], (y + offset.y))));
-
-// 	ray->vector = subtract_vec(target, ray->orig);
-// }
-
 /*
  * generate random sampling point on pixels
  * and return the color sampled
@@ -127,8 +135,9 @@ int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d[2], int 
 	t_vector3d		offset;
 	t_vector3d		color;
 	t_vector3d		res;
+	(void)	x;
 
-	seed = 12345 + x;
+	seed = 12349 + x;
 	k = -1;
 	color = new_vector3d(0, 0, 0);
 	res.z = target.z;
@@ -142,23 +151,25 @@ int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d[2], int 
 		res.y = target.y + (offset.y * viewport_d[Y].y) + \
 (offset.x * viewport_d[X].y);
 
-		// res = add_vector(target, add_vector(\
-// multiply_vec_scalar(viewport_d[X], offset.x), multiply_vec_scalar(viewport_d[Y], offset.y)));
+		// res = add_vec(target, add_vec(\
+// mult_vec_scalar(viewport_d[X], offset.x), mult_vec_scalar(viewport_d[Y], offset.y)));
 
 		// auto pixel_sample = pixel00_loc
 		//						+ ((i + offset.x()) * pixel_delta_u)
 		//						+ ((j + offset.y()) * pixel_delta_v);
+		if (vars.defoc_ang > 0)
+			vars.ray.orig = sample_defoc_disk(vars, &seed);
+		vars.ray.vector = subtract_vec(res, vars.ray.orig);
 
-		vars.ray.vector = subtract_vec(res, vars.cam_orig);
 		/*debug*/printf("ft_draw:tar:%f %f %f\n", target.x, target.y, target.z);
 		/*debug*/printf("ft_draw:res:%f %f %f\n", res.x, res.y, res.z);
 
 		// /*debug*/printf("ft_draw:cam:%f %f %f\n", vars.ray.vector.x, vars.ray.vector.y,  vars.ray.vector.z);
-		// color = add_vector(color, ray_color_loop(vars, vars.ray, &seed));
-		color = add_vector(color, ray_color(vars, vars.ray, vars.ray_bounce, &seed));
+		// color = add_vec(color, ray_color_loop(vars, vars.ray, &seed));
+		color = add_vec(color, ray_color(vars, vars.ray, vars.ray_bounce, &seed));
 		// /*debug*/printf("color:%f %f %f\n", color.x, color.y, color.z);
 	}
-	color = div_vector_scalar(color, vars.sample_per_pixel);
+	color = div_vec_scalar(color, vars.sample_per_pixel);
 	color = color_correction(color);
 	// /*debug*/printf("color_fin: %f %f %f\n", color.x, color.y, color.z);
 	// color = color_correction(div_vector_scalar(color, vars.sample_per_pixel));
@@ -171,7 +182,7 @@ int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d[2], int 
  */
 t_vector3d	point_at(float t, t_ray r)
 {
-	return (add_vector(r.orig, multiply_vec_scalar(r.vector, t)));
+	return (add_vec(r.orig, mult_vec_scalar(r.vector, t)));
 }
 
 /*
@@ -186,12 +197,12 @@ t_vector3d	get_surf_norm(t_ray ray, t_vector3d sph_center, float t)
 	t_vector3d	surf_norm;
 
 	// also known as set_face_normal
-	pt_ray = add_vector(ray.orig, multiply_vec_scalar(ray.vector, t)); // .at
+	pt_ray = add_vec(ray.orig, mult_vec_scalar(ray.vector, t)); // .at
 	surf_norm = subtract_vec(pt_ray, sph_center);
 	surf_norm = unit_vector3d(surf_norm); // div by radius
 	// so, reverse surf_norm if so
 	if (scalar_product(ray.vector, surf_norm) > 0) // pointing in same direction
-		surf_norm = multiply_vec_scalar(surf_norm, -1);
+		surf_norm = mult_vec_scalar(surf_norm, -1);
 	return (surf_norm);
 }
 
@@ -226,11 +237,11 @@ int	hit(t_vars vars, t_ray ray, t_vector3d *surf_norm, t_vector3d *at)
 		/*debug*/printf("id:%d\n", x);
 		t = has_hit_sphere(vars.sph[x].orig, vars.sph[x].rad, ray);
 		/*debug*/printf("has_hit_sphere:t:%f\n", t);
-		if (t >= 0.001 && t <= min)
+		if (t > 0.001 && t <= min)
 		{
 			res = x;
 			min = t;
-			*at = add_vector(ray.orig, multiply_vec_scalar(ray.vector, t));
+			*at = add_vec(ray.orig, mult_vec_scalar(ray.vector, t));
 			*surf_norm = get_surf_norm(ray, vars.sph[x].orig, t);
 		}
 	}
@@ -243,7 +254,7 @@ t_vector3d	simulate_fuzz(t_vector3d bounce_ray, float fuzz, unsigned int *seed)
 
 	if (fuzz > 1)
 		fuzz = 1;
-	res = add_vector(bounce_ray, multiply_vec_scalar(rand_unit_vec(seed), fuzz));
+	res = add_vec(bounce_ray, mult_vec_scalar(rand_unit_vec(seed), fuzz));
 	return (res);
 }
 
@@ -261,7 +272,7 @@ float fuzz, unsigned int *seed)
 	float		magnitude;
 
 	magnitude = 2 * (scalar_product(incoming_ray, surf_norm));
-	bounce_ray = multiply_vec_scalar(surf_norm, magnitude);
+	bounce_ray = mult_vec_scalar(surf_norm, magnitude);
 	bounce_ray = unit_vector3d(subtract_vec(incoming_ray, bounce_ray));
 	if (fuzz > 0.0)
 		bounce_ray = simulate_fuzz(bounce_ray, fuzz, seed);
@@ -273,7 +284,7 @@ t_vector3d	mat_lambertian(t_vector3d surf_norm, unsigned int *seed)
 {
 	t_vector3d	res;
 
-	res = add_vector(surf_norm, rand_vec(seed)); //rand_unit_vec
+	res = add_vec(surf_norm, rand_vec(seed)); //rand_unit_vec
 	if (is_near_zero(res))
 		res = surf_norm;
 	return (res);
@@ -305,7 +316,7 @@ unsigned int *seed)
 vars.sph[state].mat.albedo));
 // 0.5)); //weaken its color reflectance by 50% everytime it bounce
 
-// multiply_vec_scalar(vars.sph[state].mat.albedo, 0.8)));
+// mult_vec_scalar(vars.sph[state].mat.albedo, 0.8)));
 // 		return (new_vector3d(0.5*255*(surf_norm.x+1),
 // 0.5*255*(surf_norm.y+1),
 // 0.5*255*(surf_norm.z+1)));
@@ -345,7 +356,7 @@ vars.sph[state].mat.albedo));
 // 			factor /= 2;
 // 		}
 // 		else
-// 			color = multiply_vec_scalar(sky, factor);
+// 			color = mult_vec_scalar(sky, factor);
 // 	}
 // 	return (color);
 // }

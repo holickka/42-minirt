@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:15:24 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/19 11:44:57 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 16:49:46 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,27 @@ t_vector3d	rand_vec(unsigned int *seed)
 	return (res);
 }
 
+/* generate unit_vectors for lens on camera, ranges -1 to 1 */
+t_vector3d	rand_unit_disk(unsigned int *seed)
+{
+	t_vector3d	pt;
+	float		len_sq;
+
+	while (1)
+	{
+		pt = rand_vec_range(seed, -1, 1);
+		pt.z = 0;
+		len_sq = (pt.x * pt.x) + \
+(pt.y * pt.y) + \
+(pt.z * pt.z);
+		if (len_sq < 1)
+			return (pt);
+	}
+}
+
 /*
  * generate & returns a random unit vector that lies within the unit sphere
+ * (unit_sphere: x sq + y sq + z sq = 1)
  * len_sq <= 1 is to make sure the vector is within sphere (with unit len of 1)
  */
 t_vector3d	rand_unit_vec(unsigned int *seed)//, t_vector3d surf_norm)
@@ -72,12 +91,8 @@ t_vector3d	rand_unit_vec(unsigned int *seed)//, t_vector3d surf_norm)
 		len_sq = (pt.x * pt.x) + \
 (pt.y * pt.y) + \
 (pt.z * pt.z);
-	// if (len_sq > 1e-160 && len_sq <= 1)
 		if (len_sq > 0.00001f && len_sq <= 1)
-		{
-			len_sq = sqrt(len_sq);
-			return (div_vector_scalar(pt, len_sq));
-		}
+			return (div_vec_scalar(pt, sqrt(len_sq)));
 	}
 }
 

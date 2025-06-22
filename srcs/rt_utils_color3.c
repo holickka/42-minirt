@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 19:11:59 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/15 22:44:37 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 15:11:59 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_vector3d	lerp_rgb(t_vector3d c1, t_vector3d c2, float t)
 {
 	t_vector3d	color;
 
-	color = add_vector(multiply_vec_scalar(c1, (1 - t)), \
-multiply_vec_scalar(c2, t));
+	color = add_vec(mult_vec_scalar(c1, (1 - t)), \
+mult_vec_scalar(c2, t));
 	return (color);
 }

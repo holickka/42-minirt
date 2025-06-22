@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:33:14 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/16 21:06:15 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/20 09:25:00 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_quat	new_quaternion(t_vector3d axis, float deg)
 	// rad = (deg * M_PI) / 180;
 	rad = radian(deg);
 	q.scalar = cos(rad / 2);
-	q.vector = multiply_vec_scalar(axis, sin(rad / 2));
+	q.vector = mult_vec_scalar(axis, sin(rad / 2));
 	return (q);
 }
 
@@ -50,7 +50,7 @@ t_quat	conjugate_quaternion(t_quat q1)
 	t_quat	result;
 
 	result.scalar = q1.scalar;
-	result.vector = multiply_vec_scalar(q1.vector, -1.0);
+	result.vector = mult_vec_scalar(q1.vector, -1.0);
 	return (result);
 }
 
@@ -75,5 +75,5 @@ void	norm_quaternion(t_quat *q1)
 
 	qlength = len_quaternion(*q1);
 	q1->scalar /= qlength;
-	q1->vector = multiply_vec_scalar(q1->vector, 1.0 / qlength);
+	q1->vector = mult_vec_scalar(q1->vector, 1.0 / qlength);
 }

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:20:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/18 21:40:47 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 15:10:13 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * Multiply vector with scalar 
  * q = cos(deg/2) + sin(deg/2)( x + y + z )
  */
-t_vector3d	multiply_vec_scalar(t_vector3d a, float s)
+t_vector3d	mult_vec_scalar(t_vector3d a, float s)
 {
 	t_vector3d	result;
 
@@ -31,7 +31,7 @@ t_vector3d	multiply_vec_scalar(t_vector3d a, float s)
 }
 
 /* Divide vector with scalar */
-t_vector3d	div_vector_scalar(t_vector3d a, float s)
+t_vector3d	div_vec_scalar(t_vector3d a, float s)
 {
 	t_vector3d	result;
 

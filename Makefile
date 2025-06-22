@@ -46,6 +46,7 @@ SRCS_FILES =	\
 				rt_utils_color6.c			\
 				rt_utils_free.c				\
 				rt_utils.c					\
+				debug.c 					\
 				main.c 						
 #				main-test.c 				\
 #				rt_utils_color.c			\

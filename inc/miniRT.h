@@ -168,7 +168,10 @@ typedef struct s_vars
 	t_vector3d		cam_lookat;
 	t_vector3d		vup; //vertical fov
 	float			vfov; //vertical fov
-	float			focal_len;
+	// float			focal_len;
+	float			focus_dist;
+	float			defoc_ang; //defocus angle
+	t_vector3d		defoc_disk[2];
 	int				sample_per_pixel;
 	unsigned char	ray_bounce; /* how many times a ray should bounce */
 	t_vector3d		color_bg[2];
@@ -185,7 +188,7 @@ void		init_variable(t_vars *vars);
 /* __________________ img render __________________ */
 void		my_mlx_pixel_put(t_vars vars, int x, int y, int color);
 void		my_create_image(t_vars *vars, t_imgdata *img);
-void		my_render_image(t_vars vars);
+void		my_render_image(t_vars *vars);
 void		clear_image(t_vars vars, int win_width, int win_height, int color);
 
 /* __________________ ray __________________ */
@@ -221,9 +224,8 @@ float		rand_lcg_range(unsigned int *seed, float min, float max);
 t_vector3d	rand_vec(unsigned int *seed);
 t_vector3d	rand_vec_range(unsigned int *seed, float min, float max);
 t_vector3d	rand_unit_vec(unsigned int *seed);
+t_vector3d	rand_unit_disk(unsigned int *seed);
 // t_vector3d	rand_on_hemisphere(unsigned int *seed, t_vector3d surf_norm);
-
-// t_vector3d	norm_rand_vec(unsigned int *seed, t_vector3d surf_norm);
 
 /* __________________ malloc functions __________________ */
 int			malloc_sph_ptr(t_sph **dest, int num);
@@ -231,6 +233,7 @@ int			malloc_sph_ptr(t_sph **dest, int num);
 /* __________________ memory free functions __________________ */
 void		free_malloc(t_vars *vars, int indicator);
 
-
+/* __________________ debug functions __________________ */
+void	debug_print_vec(char *str, t_vector3d vec);
 
 #endif

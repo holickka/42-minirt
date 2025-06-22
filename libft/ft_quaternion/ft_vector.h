@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 21:37:14 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/18 11:43:04 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 15:13:09 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ typedef struct s_quaternion
 t_vector3d	new_vector3d(float x, float y, float z);
 float		len_vector3d(t_vector3d vector);
 t_vector3d	unit_vector3d(t_vector3d vector);
-t_vector3d	multiply_vec_scalar(t_vector3d a, float s);
+t_vector3d	mult_vec_scalar(t_vector3d a, float s);
 t_vector3d	subtract_vector_scalar(t_vector3d a, float s);
-t_vector3d	div_vector_scalar(t_vector3d a, float s);
+t_vector3d	div_vec_scalar(t_vector3d a, float s);
 
-t_vector3d	add_vector(t_vector3d a, t_vector3d b);
+t_vector3d	add_vec(t_vector3d a, t_vector3d b);
 t_vector3d	subtract_vec(t_vector3d a, t_vector3d b);
 
 float		scalar_product(t_vector3d a, t_vector3d b);

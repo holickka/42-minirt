@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:07:37 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/06 15:20:54 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/20 09:34:31 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main()
 	init_variable(&vars);
 
 	/* _____________rendering_____________ */
-	my_render_image(vars);//, viewport_00_center, viewport_d);
+	my_render_image(&vars);//, viewport_00_center, viewport_d);
 
 	/* _____________close windows_____________ */
 	mlx_hook(vars.mlxwindow, 17, 0, close_window_x, &vars);

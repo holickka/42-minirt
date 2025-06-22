@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 16:36:20 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/18 11:43:23 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 15:11:47 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_vector3d	new_vector3d(float x, float y, float z)
 	return (newvector);
 }
 
-/* Calculates length of a vector */
+/* Calculates length of a vector, returns sqrt(x^2 + y^2 + z^2) */
 float	len_vector3d(t_vector3d vector)
 {
 	return (sqrt((vector.x * vector.x) + \
@@ -45,7 +45,7 @@ vector.z / len));
 }
 
 /* Add vector + vector */
-t_vector3d	add_vector(t_vector3d a, t_vector3d b)
+t_vector3d	add_vec(t_vector3d a, t_vector3d b)
 {
 	t_vector3d	result;
 
