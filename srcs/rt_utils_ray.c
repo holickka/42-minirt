@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 20:18:16 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/22 18:04:32 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 18:53:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@
  * https://raytracing.github.io/books/RayTracingInOneWeekend.html
  * https://youtu.be/ebzlMOw79Yw?si=8SXTPsEcSUtwft71
  */
-float	has_hit_sphere(t_vector3d sph_orig, float radius, t_ray ray)
+float	has_hit_sphere(t_vec3 sph_orig, float radius, t_ray ray)
 {
 	float		n[3];
 	float		discriminant;
 	float		tmp;
-	t_vector3d	ray_to_center;
+	t_vec3	ray_to_center;
 
 	ray_to_center = subtract_vec(sph_orig, ray.orig);
 	n[A] = scalar_product(ray.vector, ray.vector) + EPS;
@@ -64,9 +64,9 @@ float	has_hit_sphere(t_vector3d sph_orig, float radius, t_ray ray)
  * child function in sample_pixels 
  * return a random vector for pixel sampling
  */
-t_vector3d	sample_sq_rand(unsigned int *seed)
+t_vec3	sample_sq_rand(unsigned int *seed)
 {
-	t_vector3d	pt;
+	t_vec3	pt;
 
 	pt = new_vector3d(rand_lcg(seed) - 0.5, rand_lcg(seed) - 0.5, 0);
 	// /*debug*/printf("sample_sq_rand:%f %f %f\n", pt.x, pt.y, pt.z);
@@ -77,10 +77,10 @@ t_vector3d	sample_sq_rand(unsigned int *seed)
  * child function in sample_pixels 
  * return a random defoc_disk vector for disk sampling
  */
-t_vector3d	sample_defoc_disk(t_vars vars, unsigned int *seed)
+t_vec3	sample_defoc_disk(t_vars vars, unsigned int *seed)
 {
-	t_vector3d	pt;
-	t_vector3d	res;
+	t_vec3	pt;
+	t_vec3	res;
 
 	pt = rand_unit_disk(seed);
 	// res = vars.cam_orig;
@@ -110,9 +110,9 @@ static float	linear_to_gamma(float n)
 }
 
 /* does color correction converting color values frm linear to gamma space */
-t_vector3d	color_correction(t_vector3d color)
+t_vec3	color_correction(t_vec3 color)
 {
-	t_vector3d	res;
+	t_vec3	res;
 
 	res.x = (int)(linear_to_gamma(color.x) * 256.0);
 	res.y = (int)(linear_to_gamma(color.y) * 256.0);
@@ -128,13 +128,13 @@ t_vector3d	color_correction(t_vector3d color)
  * generate random sampling point on pixels
  * and return the color sampled
  */
-int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d[2], int x)
+int	sample_pixels(t_vars vars, t_vec3 target, t_vec3 viewport_d[2], int x)
 {
 	int				k;
 	unsigned int	seed;
-	t_vector3d		offset;
-	t_vector3d		color;
-	t_vector3d		res;
+	t_vec3		offset;
+	t_vec3		color;
+	t_vec3		res;
 	(void)	x;
 
 	seed = 12349 + x;
@@ -180,7 +180,7 @@ int	sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d[2], int 
  * 3d point along a vector ray
  * vec = origin + (t * direction)
  */
-t_vector3d	point_at(float t, t_ray r)
+t_vec3	point_at(float t, t_ray r)
 {
 	return (add_vec(r.orig, mult_vec_scalar(r.vector, t)));
 }
@@ -191,10 +191,10 @@ t_vector3d	point_at(float t, t_ray r)
  * reverse direction of surf_norm if so
  * returns a surf_norm in unit vector
  */
-t_vector3d	get_surf_norm(t_ray ray, t_vector3d sph_center, float t)
+t_vec3	get_surf_norm(t_ray ray, t_vec3 sph_center, float t)
 {
-	t_vector3d	pt_ray;
-	t_vector3d	surf_norm;
+	t_vec3	pt_ray;
+	t_vec3	surf_norm;
 
 	// also known as set_face_normal
 	pt_ray = add_vec(ray.orig, mult_vec_scalar(ray.vector, t)); // .at
@@ -207,7 +207,7 @@ t_vector3d	get_surf_norm(t_ray ray, t_vector3d sph_center, float t)
 }
 
 /* assigns ray to value specified in arguments */
-t_ray	new_ray(t_vector3d origin, t_vector3d dir)
+t_ray	new_ray(t_vec3 origin, t_vec3 dir)
 {
 	t_ray	ray;
 
@@ -222,7 +222,7 @@ t_ray	new_ray(t_vector3d origin, t_vector3d dir)
  * returns the closest point ray hits
  * at = origin + (t * direction)
  */
-int	hit(t_vars vars, t_ray ray, t_vector3d *surf_norm, t_vector3d *at)
+int	hit(t_vars vars, t_ray ray, t_vec3 *surf_norm, t_vec3 *at)
 {
 	int			x;
 	float		t;
@@ -248,9 +248,9 @@ int	hit(t_vars vars, t_ray ray, t_vector3d *surf_norm, t_vector3d *at)
 	return (res);
 }
 
-t_vector3d	simulate_fuzz(t_vector3d bounce_ray, float fuzz, unsigned int *seed)
+t_vec3	simulate_fuzz(t_vec3 bounce_ray, float fuzz, unsigned int *seed)
 {
-	t_vector3d	res;
+	t_vec3	res;
 
 	if (fuzz > 1)
 		fuzz = 1;
@@ -265,10 +265,10 @@ t_vector3d	simulate_fuzz(t_vector3d bounce_ray, float fuzz, unsigned int *seed)
  * * surf_norm
  * = magnitude * dir
  */
-t_vector3d	mat_metal(t_vector3d incoming_ray, t_vector3d surf_norm, \
+t_vec3	mat_metal(t_vec3 incoming_ray, t_vec3 surf_norm, \
 float fuzz, unsigned int *seed)
 {
-	t_vector3d	bounce_ray;
+	t_vec3	bounce_ray;
 	float		magnitude;
 
 	magnitude = 2 * (scalar_product(incoming_ray, surf_norm));
@@ -280,9 +280,9 @@ float fuzz, unsigned int *seed)
 }
 
 /* get reflected ray direction when when surface material is diffuse */
-t_vector3d	mat_lambertian(t_vector3d surf_norm, unsigned int *seed)
+t_vec3	mat_lambertian(t_vec3 surf_norm, unsigned int *seed)
 {
-	t_vector3d	res;
+	t_vec3	res;
 
 	res = add_vec(surf_norm, rand_vec(seed)); //rand_unit_vec
 	if (is_near_zero(res))
@@ -295,13 +295,13 @@ t_vector3d	mat_lambertian(t_vector3d surf_norm, unsigned int *seed)
  * checks if ray hits any object
  * defines what color should the ray be
  */
-t_vector3d	ray_color(t_vars vars, t_ray ray, unsigned char ray_bounce, \
+t_vec3	ray_color(t_vars vars, t_ray ray, unsigned char ray_bounce, \
 unsigned int *seed)
 {
 	float		t;
 	int			state;
 	t_ray		bounce;
-	t_vector3d	surf_norm;
+	t_vec3	surf_norm;
 
 	if (ray_bounce <= 0)
 		return (new_vector3d(0, 0, 0));

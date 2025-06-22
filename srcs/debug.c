@@ -6,13 +6,13 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:52:37 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/20 13:53:49 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 18:53:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	debug_print_vec(char *str, t_vector3d vec)
+void	debug_print_vec(char *str, t_vec3 vec)
 {
 	printf("%s: %f %f %f\n", str, vec.x, vec.y, vec.z);
 }

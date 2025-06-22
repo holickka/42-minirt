@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:33:14 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/20 09:25:00 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 18:53:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ float	radian(float deg)
  * q = cos(deg/2) + sin(deg/2)( x + y + z )
  *   = cos(deg/2) + (x * sin(deg/2)) + (y * sin(deg/2)) + (z * sin(deg/2))
  */
-t_quat	new_quaternion(t_vector3d axis, float deg)
+t_quat	new_quaternion(t_vec3 axis, float deg)
 {
 	t_quat	q;
 	float	rad;

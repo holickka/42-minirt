@@ -67,9 +67,8 @@ enum	e_vector_values
 	X = 0,
 	Y = 1,
 	Z = 2,
-	U = 0,
-	V = 1,
-	W = 2
+	W = 0,
+	H = 1
 };
 
 enum	e_quadratic_values
@@ -120,21 +119,21 @@ typedef struct s_imgdata
 
 typedef struct s_ray
 {
-	t_vector3d	orig;
-	t_vector3d	vector;
+	t_vec3	orig;
+	t_vec3	vector;
 }	t_ray;
 
 typedef struct s_mat
 {
-	t_uchar		type; //material type
-	t_vector3d	albedo; //obj base color
+	t_uchar	type; //material type
+	t_vec3	albedo; //obj base color
 }	t_mat;
 
 typedef struct s_sph
 {
-	t_vector3d	orig; //origin
-	float		rad; //radius
-	t_mat		mat;
+	t_vec3	orig; //origin
+	float	rad; //radius
+	t_mat	mat;
 
 }	t_sph;
 
@@ -159,22 +158,22 @@ typedef struct s_sph
 
 typedef struct s_vars
 {
-	void			*mlxconnect;
-	void			*mlxwindow;
-	t_imgdata		img;
+	void		*mlxconnect;
+	void		*mlxwindow;
+	t_imgdata	img;
 
 	//camera setup
-	t_vector3d		cam_orig;
-	t_vector3d		cam_lookat;
-	t_vector3d		vup; //vertical fov
+	t_vec3			cam_orig;
+	t_vec3			cam_lookat;
+	t_vec3			vup; //vertical fov
 	float			vfov; //vertical fov
 	// float			focal_len;
 	float			focus_dist;
 	float			defoc_ang; //defocus angle
-	t_vector3d		defoc_disk[2];
+	t_vec3			defoc_disk[2];
 	int				sample_per_pixel;
 	unsigned char	ray_bounce; /* how many times a ray should bounce */
-	t_vector3d		color_bg[2];
+	t_vec3			color_bg[2];
 
 	//obj
 	int				count_sph;
@@ -192,14 +191,14 @@ void		my_render_image(t_vars *vars);
 void		clear_image(t_vars vars, int win_width, int win_height, int color);
 
 /* __________________ ray __________________ */
-float		has_hit_sphere(t_vector3d sphere, float radius, t_ray ray);
-t_vector3d	ray_color(t_vars vars, t_ray ray, unsigned char ray_bounce, unsigned int *seed);
+float		has_hit_sphere(t_vec3 sphere, float radius, t_ray ray);
+t_vec3		ray_color(t_vars vars, t_ray ray, unsigned char ray_bounce, unsigned int *seed);
 // t_vector3d	ray_color_loop(t_vars vars, t_ray ray, unsigned int *seed);
-t_ray		new_ray(t_vector3d origin, t_vector3d dir);
+t_ray		new_ray(t_vec3 origin, t_vec3 dir);
 
 // int			ray_color(t_vars vars, t_ray ray);
-int			sample_pixels(t_vars vars, t_vector3d target, t_vector3d viewport_d[2], int x);
-t_vector3d	sample_sq_rand(unsigned int *seed);
+int			sample_pixels(t_vars vars, t_vec3 target, t_vec3 viewport_d[2], int x);
+t_vec3		sample_sq_rand(unsigned int *seed);
 
 /* __________________ key configurations __________________ */
 int			close_window(int keycode, t_vars *vars);
@@ -207,24 +206,24 @@ int			close_window_x(int keycode, t_vars *vars);
 
 /* __________________ color lerp __________________ */
 int			lerp_hsv(int *hsv1, int *hsv2, float t);
-t_vector3d	lerp_rgb(t_vector3d c1, t_vector3d c2, float t);
+t_vec3		lerp_rgb(t_vec3 c1, t_vec3 c2, float t);
 int			create_rgb(int r_value, int g_value, int b_value);
 int			*create_hsv(int h_value, int s_value, int v_value);
 // void	swap_value(int *num1, int *num2);
 int			hsv_to_rgb(int *new_hsv);
-t_vector3d	split_rgb(int color);
+t_vec3		split_rgb(int color);
 // void		split_rgb(int color, int ptr[3]);
 
 /* __________________ utils __________________ */
-bool	is_near_zero(t_vector3d vec);
+bool		is_near_zero(t_vec3 vec);
 
 /* __________________ random __________________ */
 float		rand_lcg(unsigned int *seed);
 float		rand_lcg_range(unsigned int *seed, float min, float max);
-t_vector3d	rand_vec(unsigned int *seed);
-t_vector3d	rand_vec_range(unsigned int *seed, float min, float max);
-t_vector3d	rand_unit_vec(unsigned int *seed);
-t_vector3d	rand_unit_disk(unsigned int *seed);
+t_vec3		rand_vec(unsigned int *seed);
+t_vec3		rand_vec_range(unsigned int *seed, float min, float max);
+t_vec3		rand_unit_vec(unsigned int *seed);
+t_vec3		rand_unit_disk(unsigned int *seed);
 // t_vector3d	rand_on_hemisphere(unsigned int *seed, t_vector3d surf_norm);
 
 /* __________________ malloc functions __________________ */
@@ -234,6 +233,6 @@ int			malloc_sph_ptr(t_sph **dest, int num);
 void		free_malloc(t_vars *vars, int indicator);
 
 /* __________________ debug functions __________________ */
-void	debug_print_vec(char *str, t_vector3d vec);
+void		debug_print_vec(char *str, t_vec3 vec);
 
 #endif

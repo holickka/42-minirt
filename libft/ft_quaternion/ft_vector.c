@@ -6,16 +6,16 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 16:36:20 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/22 15:11:47 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 18:53:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_vector.h"
 
 /* Creates new vector from given values */
-t_vector3d	new_vector3d(float x, float y, float z)
+t_vec3	new_vector3d(float x, float y, float z)
 {
-	t_vector3d	newvector;
+	t_vec3	newvector;
 
 	newvector.x = x;
 	newvector.y = y;
@@ -24,7 +24,7 @@ t_vector3d	new_vector3d(float x, float y, float z)
 }
 
 /* Calculates length of a vector, returns sqrt(x^2 + y^2 + z^2) */
-float	len_vector3d(t_vector3d vector)
+float	len_vector3d(t_vec3 vector)
 {
 	return (sqrt((vector.x * vector.x) + \
 (vector.y * vector.y) + \
@@ -32,7 +32,7 @@ float	len_vector3d(t_vector3d vector)
 }
 
 /* Normalize vector into unit vector */
-t_vector3d	unit_vector3d(t_vector3d vector)
+t_vec3	unit_vector3d(t_vec3 vector)
 {
 	float	len;
 
@@ -45,9 +45,9 @@ vector.z / len));
 }
 
 /* Add vector + vector */
-t_vector3d	add_vec(t_vector3d a, t_vector3d b)
+t_vec3	add_vec(t_vec3 a, t_vec3 b)
 {
-	t_vector3d	result;
+	t_vec3	result;
 
 	result.x = a.x + b.x;
 	result.y = a.y + b.y;
@@ -56,9 +56,9 @@ t_vector3d	add_vec(t_vector3d a, t_vector3d b)
 }
 
 /* return vector a minus vector b */
-t_vector3d	subtract_vec(t_vector3d a, t_vector3d b)
+t_vec3	subtract_vec(t_vec3 a, t_vec3 b)
 {
-	t_vector3d	result;
+	t_vec3	result;
 
 	result.x = a.x - b.x;
 	result.y = a.y - b.y;

@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 12:20:52 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/22 15:10:13 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 18:53:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
  * Multiply vector with scalar 
  * q = cos(deg/2) + sin(deg/2)( x + y + z )
  */
-t_vector3d	mult_vec_scalar(t_vector3d a, float s)
+t_vec3	mult_vec_scalar(t_vec3 a, float s)
 {
-	t_vector3d	result;
+	t_vec3	result;
 
 	result = new_vector3d(0, 0, 0);
 	if (a.x != 0)
@@ -31,9 +31,9 @@ t_vector3d	mult_vec_scalar(t_vector3d a, float s)
 }
 
 /* Divide vector with scalar */
-t_vector3d	div_vec_scalar(t_vector3d a, float s)
+t_vec3	div_vec_scalar(t_vec3 a, float s)
 {
-	t_vector3d	result;
+	t_vec3	result;
 
 	result.x = a.x / s;
 	result.y = a.y / s;
@@ -42,9 +42,9 @@ t_vector3d	div_vec_scalar(t_vector3d a, float s)
 }
 
 /* Subtract vector with scalar */
-t_vector3d	subtract_vector_scalar(t_vector3d a, float s)
+t_vec3	subtract_vector_scalar(t_vec3 a, float s)
 {
-	t_vector3d	result;
+	t_vec3	result;
 
 	result.x = a.x - s;
 	result.y = a.y - s;

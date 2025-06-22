@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:15:24 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/22 16:49:46 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 18:53:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,18 @@ float	rand_lcg_range(unsigned int *seed, float min, float max)
 }
 
 /* return a random vector with xyz between 0 to 1 */
-t_vector3d	rand_vec(unsigned int *seed)
+t_vec3	rand_vec(unsigned int *seed)
 {
-	t_vector3d	res;
+	t_vec3	res;
 
 	res = new_vector3d(rand_lcg(seed), rand_lcg(seed), rand_lcg(seed));
 	return (res);
 }
 
 /* generate unit_vectors for lens on camera, ranges -1 to 1 */
-t_vector3d	rand_unit_disk(unsigned int *seed)
+t_vec3	rand_unit_disk(unsigned int *seed)
 {
-	t_vector3d	pt;
+	t_vec3	pt;
 	float		len_sq;
 
 	while (1)
@@ -79,9 +79,9 @@ t_vector3d	rand_unit_disk(unsigned int *seed)
  * (unit_sphere: x sq + y sq + z sq = 1)
  * len_sq <= 1 is to make sure the vector is within sphere (with unit len of 1)
  */
-t_vector3d	rand_unit_vec(unsigned int *seed)//, t_vector3d surf_norm)
+t_vec3	rand_unit_vec(unsigned int *seed)//, t_vector3d surf_norm)
 {
-	t_vector3d	pt;
+	t_vec3	pt;
 	float		len_sq;
 
 	while (1)
@@ -111,9 +111,9 @@ t_vector3d	rand_unit_vec(unsigned int *seed)//, t_vector3d surf_norm)
 // 	return (vec);
 // }
 
-t_vector3d	rand_vec_range(unsigned int *seed, float min, float max)
+t_vec3	rand_vec_range(unsigned int *seed, float min, float max)
 {
-	t_vector3d	res;
+	t_vec3	res;
 
 	res = new_vector3d(rand_lcg_range(seed, min, max), \
 rand_lcg_range(seed, min, max), \

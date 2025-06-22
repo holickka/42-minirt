@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 21:45:50 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/22 17:11:37 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 18:55:29 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int main()
 	// sample_sq_rand(&seed);
 	/* __________________ rand_vec __________________*/
 	// unsigned int seed = 12345; // You can change this seed
-	// t_vector3d	res;
+	// t_vec3	res;
 	// int	x = -1;
 	// // res = rand_vec(&seed);
 	
@@ -58,7 +58,7 @@ int main()
 
 	/* __________________ rand_on_hemisphere __________________*/
 	// unsigned int seed = 12345; // You can change this seed
-	// t_vector3d	res;
+	// t_vec3	res;
 	// int	x = -1;
 	// while (++x < 3)
 	// {
@@ -67,7 +67,7 @@ int main()
 	// }
 
 	/* __________________ near_zero __________________*/
-	t_vector3d vec = new_vector3d(0.001, 0.001, 0.00018);
+	t_vec3 vec = new_vector3d(0.001, 0.001, 0.00018);
 	printf("%d\n", is_near_zero(vec));
 
 	/* __________________ retrieve_rgb __________________*/

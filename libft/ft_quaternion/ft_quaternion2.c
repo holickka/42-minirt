@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 16:55:02 by hsim              #+#    #+#             */
-/*   Updated: 2025/05/05 18:09:18 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 18:53:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ scalar_product(q1.vector, q2.vector);
  * new p = q . p . q inverse
  * q1= the rotation quaternion
  */
-t_vector3d	quaternion_rotate(t_quat q1, t_vector3d initpoint)
+t_vec3	quaternion_rotate(t_quat q1, t_vec3 initpoint)
 {
 	t_quat	q2;
 	t_quat	qpoint;
@@ -60,8 +60,8 @@ t_vector3d	quaternion_rotate(t_quat q1, t_vector3d initpoint)
  * left (q2 . q1) = rotation on global axis,
  * right (q1 . q2) = rotation on local axis 
  */
-t_vector3d	quaternion_rotate_adv(t_quat x, t_quat y, t_quat z, \
-t_vector3d initpoint)
+t_vec3	quaternion_rotate_adv(t_quat x, t_quat y, t_quat z, \
+t_vec3 initpoint)
 {
 	t_quat	qpoint;
 	t_quat	result;

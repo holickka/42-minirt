@@ -41,9 +41,9 @@ SRCS_FILES =	\
 				rt_utils_key.c				\
 				rt_utils_ray.c				\
 				rt_utils_rand.c				\
-				rt_utils_draw.c				\
-				rt_utils_color3.c			\
-				rt_utils_color6.c			\
+				rt_utils_draw1.c			\
+				rt_utils_draw2.c			\
+				rt_utils_color.c			\
 				rt_utils_free.c				\
 				rt_utils.c					\
 				debug.c 					\

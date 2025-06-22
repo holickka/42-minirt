@@ -6,7 +6,7 @@
 /*   By: hsim <hsim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 13:05:22 by hsim              #+#    #+#             */
-/*   Updated: 2025/06/22 18:04:38 by hsim             ###   ########.fr       */
+/*   Updated: 2025/06/22 18:53:38 by hsim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	initialize_mlx(t_vars *vars)
  * wrapper function to assign members in target to location & sph_radius
  * target has been malloced before passing to here
  */
-t_sph	new_sphere(t_vector3d position, float sph_radius, t_vector3d color, t_uchar mat_type)
+t_sph	new_sphere(t_vec3 position, float sph_radius, t_vec3 color, t_uchar mat_type)
 {
 	t_sph	target;
 
@@ -60,7 +60,7 @@ void	init_variable(t_vars *vars)
 	// /*debug*/printf("focal_len:%f %d\n", vars->focal_len, (int)len_vector3d(subtract_vec(vars->cam_orig, vars->cam_lookat)));
 
 	vars->ray_bounce = 5;
-	vars->sample_per_pixel = 100;
+	vars->sample_per_pixel = 5;
 	vars->ray.orig = vars->cam_orig; //be careful with this one, maybe copy safer?
 	vars->ray.vector = new_vector3d(0, 0, 0);
 
