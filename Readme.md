@@ -1,6 +1,7 @@
 # miniRT
-code a raytracer using minilibx library.
+code a raytracer using minilibx library. [View Slides](https://www.figma.com/slides/sSuvmqSM8IovhqllXsAJdD/miniRT)
 
+![minirt intro](asset/readme/minirt.gif)
 
 ## References
 [How Does Raytracing Works in Games & Movies](https://www.youtube.com/watch?v=iOlehM5kNSk&t=1555s&pp=0gcJCX4JAYcqIYzv).
